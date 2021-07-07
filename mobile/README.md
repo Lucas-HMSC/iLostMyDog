@@ -1,6 +1,6 @@
 # iLostMyDog - Mobile
 
-## Como executar:
+### Como executar:
 
 - Instale as dependências com `yarn` ou `npm install`.
 - Execute `expo start`.
