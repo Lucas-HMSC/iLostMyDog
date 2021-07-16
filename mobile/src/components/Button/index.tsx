@@ -12,10 +12,22 @@ type Props = RectButtonProps & {
 export function Button({ title, primary = false, ...rest }: Props) {
   return (
     <RectButton
-      style={ primary ? styles.containerPrimary : styles.containerSecondary }
+      style={ 
+        [styles.container, 
+          primary 
+          ? styles.containerPrimary 
+          : styles.containerSecondary] 
+      }
       { ...rest }
     >
-      <Text style={ primary ? styles.textPrimary : styles.textSecondary }>
+      <Text 
+        style={ 
+          [styles.text, 
+            primary 
+            ? styles.textPrimary 
+            : styles.textSecondary] 
+        }
+      >
         
         { title }
       </Text>

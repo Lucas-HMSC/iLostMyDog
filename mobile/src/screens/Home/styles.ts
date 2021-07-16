@@ -15,11 +15,6 @@ export const styles = StyleSheet.create({
     width: 250,
     marginTop: 150,
   },
-
-  buttons: {},
-
-  account: {
-  },
   
   registerContainer: {
     marginTop: 10,
