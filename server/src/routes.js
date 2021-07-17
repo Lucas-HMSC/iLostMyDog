@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const postController = require('./controllers/postController');
+const imageController = require('./controllers/imageController');
+const loginController = require('./controllers/loginController.js');
 
 router.get('/',(req,res) =>{
     res.redirect('/login');
@@ -10,21 +12,15 @@ router.get('/home',(req,res) =>{
     res.send('Home');
 });
 
-router.get('/login', (req,res) =>{
-    res.send("Login")
-});
+router.get('/login', loginController.login);
 
-router.get('/cadastro', (req,res) =>{
-    res.send("Cadastro")
-});
+router.get('/cadastro', loginController.cadastro);
 
 router.get('/listar', (req,res) =>{
     res.send("Listar")
 });
 
-router.post('/upload', (req,res) =>{
-    res.send("Upload")
-});
+router.post('/upload', imageController.uploadImagem);
 
 router.post('/add', postController.post);
 

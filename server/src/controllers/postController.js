@@ -1,13 +1,21 @@
-exports.post = (req,res,next) => {
-    res.status(201).send("Requisição recebida");
-};
+class postController{
+    post = (req,res,next) => {
+        res.status(201).send("Requisição recebida");
+        //insert do post
+    };
 
-exports.put = (req,res,next) =>{
-    let id = req.params.id;
-    res.status(201).send(`Requisição recebida, id: ${id}`);
-};
+    put = (req,res,next) =>{
+        let id = req.params.id;
+        res.status(201).send(`Requisição recebida, id: ${id}`);
+        //update do post
+    };
 
-exports.delete = (req,res,next) =>{
-    let id = req.params.id;
-    res.status(201).send(`Requisição recebida, id: ${id}`);
-};
+    delete = (req,res,next) =>{
+        let id = req.params.id;
+        res.status(201).send(`Requisição recebida, id: ${id}`);
+        //delete do post
+    };
+}
+
+
+module.exports = new postController;
