@@ -21,6 +21,7 @@ export function Input({ title, placeholder, password=false }: Props) {
             <TextInput 
               style={styles.input}
               secureTextEntry
+              placeholder='********'
             />
           )
           : (
