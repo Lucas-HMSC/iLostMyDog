@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -10,10 +10,30 @@ import { Input } from '../../components/Input';
 import { styles } from './styles';
 
 export function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [street, setStreet] = useState('');
+
   const navigation = useNavigation();
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handleCreateAccount() {
+    console.log('Nome:', name);
+    console.log('E-mail:', email);
+    console.log('Senha:', password);
+    console.log('Estado:', country);
+    console.log('Cidade:', city);
+    console.log('Bairro:', neighborhood);
+    console.log('Rua:', street);
+
+    navigation.navigate('Home');
   }
 
   return (
@@ -38,14 +58,20 @@ export function Register() {
             <Input
               title='Nome'
               placeholder='Nome Sobrenome'
+              value={name}
+              onChangeText={(text) => setName(text)}
             />
             <Input
               title='E-mail'
               placeholder='email@email.com'
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
             <Input
               title='Senha'
               password
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
           </View>
 
@@ -63,24 +89,33 @@ export function Register() {
             <Input
               title='Estado'
               placeholder='UF (SP, RJ, etc)'
+              value={country}
+              onChangeText={(text) => setCountry(text)}
             />
             <Input
               title='Cidade'
               placeholder='Nome da cidade'
+              value={city}
+              onChangeText={(text) => setCity(text)}
             />
             <Input
               title='Bairro'
               placeholder='Nome do bairro'
+              value={neighborhood}
+              onChangeText={(text) => setNeighborhood(text)}
             />
             <Input
               title='Rua'
               placeholder='Rua Logo Ali, 123'
+              value={street}
+              onChangeText={(text) => setStreet(text)}
             />
           </View>
           <View style={styles.button}>
             <Button
               title='Criar minha conta'
               primary
+              onPress={handleCreateAccount}
             />
           </View>
       </View>

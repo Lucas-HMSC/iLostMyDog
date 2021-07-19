@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -9,6 +9,8 @@ import { Button } from '../../components/Button';
 import { styles } from './styles';
 
 export function Username() {
+  const [username, setUsername] = useState('');
+
   const navigation = useNavigation();
 
   function handleGoBack() {
@@ -16,6 +18,7 @@ export function Username() {
   }
 
   function handleGoForward() {
+    console.log('Nome:', username);
     navigation.navigate('Home');
   }
 
@@ -39,6 +42,8 @@ export function Username() {
       <TextInput
         style={styles.input}
         placeholder='Digite um nome'
+        value={username}
+        onChangeText={(text) => setUsername(text)}
       />
 
       <View style={styles.button}>
