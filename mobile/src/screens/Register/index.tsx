@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Alert, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import * as Location from 'expo-location';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -13,10 +14,11 @@ export function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [country, setCountry] = useState('');
+  const [region, setRegion] = useState('');
   const [city, setCity] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
   const [street, setStreet] = useState('');
+  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
 
   const navigation = useNavigation();
 
@@ -28,7 +30,7 @@ export function Register() {
     console.log('Nome:', name);
     console.log('E-mail:', email);
     console.log('Senha:', password);
-    console.log('Estado:', country);
+    console.log('Estado:', region);
     console.log('Cidade:', city);
     console.log('Bairro:', neighborhood);
     console.log('Rua:', street);
@@ -36,9 +38,59 @@ export function Register() {
     navigation.navigate('Home');
   }
 
+  async function handleAutoFill() {
+    checkIfLocationIsEnabled();
+
+    if (locationServiceEnabled) getCurrentLocation();
+  }
+
+  async function checkIfLocationIsEnabled() {
+    const isEnabled = await Location.hasServicesEnabledAsync();
+
+    if (!isEnabled) {
+      Alert.alert(
+        'Localização desativada',
+        'Por favor, ative seu serviço de localização para continuar',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      setLocationServiceEnabled(isEnabled);
+    }
+  }
+
+  async function getCurrentLocation() {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permissão negada',
+        'É necessário conceder a permissão :(',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+
+    const { coords } = await Location.getCurrentPositionAsync();
+
+    if (coords) {
+      const { latitude, longitude } = coords;
+
+      const response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      setRegion(response[0].region || '');
+      setCity(response[0].subregion || '');
+      setNeighborhood(response[0].district || '');
+      setStreet(response[0].street || '');
+    }
+  }
+
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
           <BorderlessButton
             style={styles.buttonBack}
             onPress={handleGoBack}
@@ -79,9 +131,11 @@ export function Register() {
             <Text style={styles.title}>
               Localização
             </Text>
-            <Text style={styles.textAuto}>
-              Auto preencher
-            </Text>
+            <BorderlessButton onPress={handleAutoFill}>
+              <Text style={styles.textAuto}>
+                Auto preencher
+              </Text>
+            </BorderlessButton>
           </View>
           <View style={styles.divisor} />
 
@@ -89,8 +143,8 @@ export function Register() {
             <Input
               title='Estado'
               placeholder='UF (SP, RJ, etc)'
-              value={country}
-              onChangeText={(text) => setCountry(text)}
+              value={region}
+              onChangeText={(text) => setRegion(text)}
             />
             <Input
               title='Cidade'
@@ -118,7 +172,7 @@ export function Register() {
               onPress={handleCreateAccount}
             />
           </View>
-      </View>
+      </SafeAreaView>
     </ScrollView>
   );
 }
