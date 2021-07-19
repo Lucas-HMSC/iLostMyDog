@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import { Button } from '../../components/Button';
 
 import { styles } from './styles';
 
-export function Continue() {
+export function Username() {
   const navigation = useNavigation();
 
   function handleGoBack() {
@@ -16,7 +16,7 @@ export function Continue() {
   }
 
   function handleGoForward() {
-    navigation.navigate('Username');
+    navigation.navigate('Home');
   }
 
   return (
@@ -32,26 +32,17 @@ export function Continue() {
         />
       </BorderlessButton>
 
-      <View>
-        <Text style={styles.emoji}>
-          ✋
-        </Text>
-        <Text style={styles.title}>
-          Atenção!
-        </Text>
-      </View>
+      <Text style={styles.text}>
+        Como podemos chamar você?
+      </Text>
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.contentText}>
-          Você pode continuar sem cadastro, porém aconselhamos criar sua conta.
-        </Text>
-        <Text style={[styles.contentText, { marginTop: 20 }]}>
-          É gratuito e rápido!
-        </Text>
-      </View>
+      <TextInput
+        style={styles.input}
+        placeholder='Digite um nome'
+      />
 
       <View style={styles.button}>
-        <Button
+        <Button 
           title='Continuar'
           onPress={handleGoForward}
         />

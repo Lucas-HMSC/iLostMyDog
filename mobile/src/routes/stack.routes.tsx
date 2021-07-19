@@ -5,6 +5,7 @@ import { Home } from '../screens/Home';
 import { Login } from '../screens/Login';
 import { Register } from '../screens/Register';
 import { Continue } from '../screens/Continue';
+import { Username } from '../screens/Username';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -32,6 +33,11 @@ export function StackRoutes() {
       <Screen 
         name='Continue'
         component={Continue}
+      />
+
+      <Screen 
+        name='Username'
+        component={Username}
       />
     </Navigator>
   );
