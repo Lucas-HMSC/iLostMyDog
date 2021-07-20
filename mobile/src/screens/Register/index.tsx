@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import * as Location from 'expo-location';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { Loading } from '../../components/Loading';
 
 import { styles } from './styles';
 
@@ -14,11 +15,10 @@ export function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [region, setRegion] = useState('');
-  const [city, setCity] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [street, setStreet] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -26,22 +26,39 @@ export function Register() {
     navigation.goBack();
   }
 
+  useEffect(() => {
+    const check = async () => {
+      await checkIfLocationIsEnabled();
+    }
+    check();
+  }, []);
+
   function handleCreateAccount() {
     console.log('Nome:', name);
     console.log('E-mail:', email);
     console.log('Senha:', password);
-    console.log('Estado:', region);
-    console.log('Cidade:', city);
-    console.log('Bairro:', neighborhood);
-    console.log('Rua:', street);
+    console.log('Latitude:', latitude);
+    console.log('Longitude:', longitude);
 
-    navigation.navigate('Home');
+    Alert.alert(
+      'Sucesso!',
+      `Conta criada, ${name}!`,
+      [{
+        text: 'Certo 🐕!',
+        onPress: () => {
+          setLoading(true);
+
+          setTimeout(() => {
+            setLoading(false);
+            navigation.navigate('Home');
+          }, 1000);
+        }
+      }]
+    );
   }
 
   async function handleAutoFill() {
-    checkIfLocationIsEnabled();
-
-    if (locationServiceEnabled) getCurrentLocation();
+    if (locationServiceEnabled) await getCurrentLocation();
   }
 
   async function checkIfLocationIsEnabled() {
@@ -51,7 +68,12 @@ export function Register() {
       Alert.alert(
         'Localização desativada',
         'Por favor, ative seu serviço de localização para continuar',
-        [{ text: 'OK' }],
+        [{ 
+          text: 'OK',
+          onPress: () => {
+            navigation.navigate('Home');
+          }
+        }],
         { cancelable: false }
       );
     } else {
@@ -71,21 +93,22 @@ export function Register() {
       );
     }
 
-    const { coords } = await Location.getCurrentPositionAsync();
+    setLoading(true);
+    const { coords } = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.High
+    });
 
     if (coords) {
       const { latitude, longitude } = coords;
 
-      const response = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude,
-      });
-
-      setRegion(response[0].region || '');
-      setCity(response[0].subregion || '');
-      setNeighborhood(response[0].district || '');
-      setStreet(response[0].street || '');
+      setLatitude(String(latitude));
+      setLongitude(String(longitude));
     }
+    setLoading(false);
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (
@@ -133,7 +156,7 @@ export function Register() {
             </Text>
             <BorderlessButton onPress={handleAutoFill}>
               <Text style={styles.textAuto}>
-                Auto preencher
+                preencher
               </Text>
             </BorderlessButton>
           </View>
@@ -141,28 +164,16 @@ export function Register() {
 
           <View style={styles.form}>
             <Input
-              title='Estado'
-              placeholder='UF (SP, RJ, etc)'
-              value={region}
-              onChangeText={(text) => setRegion(text)}
+              title='Latitude'
+              placeholder='-23.2166612'
+              value={latitude}
+              onChangeText={(text) => setLatitude(text)}
             />
             <Input
-              title='Cidade'
-              placeholder='Nome da cidade'
-              value={city}
-              onChangeText={(text) => setCity(text)}
-            />
-            <Input
-              title='Bairro'
-              placeholder='Nome do bairro'
-              value={neighborhood}
-              onChangeText={(text) => setNeighborhood(text)}
-            />
-            <Input
-              title='Rua'
-              placeholder='Rua Logo Ali, 123'
-              value={street}
-              onChangeText={(text) => setStreet(text)}
+              title='Longitude'
+              placeholder='-45.8943798'
+              value={longitude}
+              onChangeText={(text) => setLongitude(text)}
             />
           </View>
           <View style={styles.button}>
