@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
-import { Loading } from '../../components/Loading';
+import { DogLoading } from '../../components/DogLoading';
 import { Button } from '../../components/Button';
 
 import { styles } from './styles';
@@ -40,7 +40,7 @@ export function Username() {
   }
 
   if (loading) {
-    return <Loading />
+    return <DogLoading />
   }
 
   return (

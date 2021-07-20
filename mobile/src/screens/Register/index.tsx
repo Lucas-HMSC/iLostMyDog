@@ -5,9 +5,10 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
+import { DogLoading } from '../../components/DogLoading';
+import { PawLoading } from '../../components/PawLoading';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
-import { Loading } from '../../components/Loading';
 
 import { styles } from './styles';
 
@@ -18,7 +19,8 @@ export function Register() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [dogLoading, setDogLoading] = useState(false);
+  const [pawLoading, setPawLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -46,10 +48,10 @@ export function Register() {
       [{
         text: 'Certo 🐕!',
         onPress: () => {
-          setLoading(true);
+          setDogLoading(true);
 
           setTimeout(() => {
-            setLoading(false);
+            setDogLoading(false);
             navigation.navigate('Home');
           }, 1000);
         }
@@ -93,7 +95,7 @@ export function Register() {
       );
     }
 
-    setLoading(true);
+    setPawLoading(true);
     const { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.High
     });
@@ -104,11 +106,15 @@ export function Register() {
       setLatitude(String(latitude));
       setLongitude(String(longitude));
     }
-    setLoading(false);
+    setPawLoading(false);
   }
 
-  if (loading) {
-    return <Loading />
+  if (dogLoading) {
+    return <DogLoading />
+  }
+
+  if (pawLoading) {
+    return <PawLoading />
   }
 
   return (

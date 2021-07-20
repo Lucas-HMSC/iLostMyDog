@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   },
   
   animation: {
+    backgroundColor: 'transparent',
     width: 300,
     height: 300,
   },
