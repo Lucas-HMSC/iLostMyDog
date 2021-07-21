@@ -29,7 +29,10 @@ export function Login() {
 
     setTimeout(() => {
       setLoading(false);
-      navigation.navigate('Home');
+      navigation.navigate('LoginFailed');
+      setTimeout(() => {
+        navigation.navigate('Home');
+      }, 1000)
     }, 1000);
   }
 

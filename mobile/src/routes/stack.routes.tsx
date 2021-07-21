@@ -1,11 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Home } from '../screens/Home';
-import { Login } from '../screens/Login';
+import { LoginSuccess } from '../screens/LoginSuccess';
+import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
 import { Continue } from '../screens/Continue';
 import { Username } from '../screens/Username';
+import { Login } from '../screens/Login';
+import { Home } from '../screens/Home';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -23,6 +25,16 @@ export function StackRoutes() {
       <Screen 
         name='Login'
         component={Login}
+      />
+
+      <Screen 
+        name='LoginSuccess'
+        component={LoginSuccess}
+      />
+
+      <Screen 
+        name='LoginFailed'
+        component={LoginFailed}
       />
 
       <Screen 
