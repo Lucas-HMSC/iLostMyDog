@@ -118,7 +118,10 @@ export function Register() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={styles.scrollview}
+    >
       <SafeAreaView style={styles.container}>
           <BorderlessButton
             style={styles.buttonBack}

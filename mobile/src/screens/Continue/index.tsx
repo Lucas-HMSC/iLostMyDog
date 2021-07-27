@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
+import { DogLoading } from '../../components/DogLoading';
 import { Button } from '../../components/Button';
 
 import { styles } from './styles';
 
 export function Continue() {
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation();
 
   function handleGoBack() {
@@ -16,7 +19,16 @@ export function Continue() {
   }
 
   function handleGoForward() {
-    navigation.navigate('Username');
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      navigation.navigate('Home');
+    }, 1000);
+  }
+
+  if (loading) {
+    return <DogLoading />
   }
 
   return (

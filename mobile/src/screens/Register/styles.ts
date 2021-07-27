@@ -2,11 +2,16 @@ import { StyleSheet } from "react-native";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
+  scrollview: {
+    marginTop: 20,
+  },
+  
   container: {
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingVertical: 70,
+    paddingTop: 50,
+    paddingBottom: 70,
     paddingHorizontal: 52,
     position: 'relative',
   },
@@ -35,7 +40,7 @@ export const styles = StyleSheet.create({
 
   buttonBack: {
     position: 'absolute',
-    top: 40,
+    top: 20,
     left: 20,
   },
 
