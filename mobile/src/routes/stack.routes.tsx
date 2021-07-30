@@ -5,7 +5,6 @@ import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
 import { Continue } from '../screens/Continue';
-import { Username } from '../screens/Username';
 import { Login } from '../screens/Login';
 import { Home } from '../screens/Home';
 
@@ -45,11 +44,6 @@ export function StackRoutes() {
       <Screen 
         name='Continue'
         component={Continue}
-      />
-
-      <Screen 
-        name='Username'
-        component={Username}
       />
     </Navigator>
   );
