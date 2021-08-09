@@ -2,7 +2,7 @@
   "name": "ilostmydog",
   "version": "1.0.0",
   "description": "Aplicação para auxiliar na busca de cachorros perdidos.",
-  "main": "index.js",
+  "main": "bin/server.js",
   "scripts": {
     "start": "nodemon ./bin/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,10 +18,19 @@
   },
   "homepage": "https://github.com/Lucas-HMSC/iLostMyDog#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "grunt": "^1.4.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-execute": "^0.2.2",
     "nodemon": "^2.0.12"
   }
 }

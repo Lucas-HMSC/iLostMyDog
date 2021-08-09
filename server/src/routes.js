@@ -1,31 +1,38 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+
 const postController = require('./controllers/postController');
 const imageController = require('./controllers/imageController');
 const loginController = require('./controllers/loginController.js');
+const mysql = require('./services/MySqlService');
 
-router.get('/',(req,res) =>{
-    res.redirect('/login');
-});
+console.log(mysql.executeQuery("SELECT * FROM users"));
 
-router.get('/home',(req,res) =>{
-    res.send('Home');
-});
+let path=__dirname + '/views';
+let errorPage = path + '/404.html';
 
-router.get('/login', loginController.login);
 
-router.get('/cadastro', loginController.cadastro);
+router.post('/login', loginController.initialize);
 
-router.get('/listar', (req,res) =>{
-    res.send("Listar")
-});
+router.post('/cadastro', loginController.cadastro);
+
+router.get('/listar', postController.getAll);
+router.get('/listar/:id', postController.getAll);
+
+router.post('/add', postController.post);
+router.delete('/delete/:id', postController.delete);
+router.put('/update/:id', postController.put);
 
 router.post('/upload', imageController.uploadImagem);
 
-router.post('/add', postController.post);
 
-router.delete('/delete/:id', postController.delete);
 
-router.put('/update/:id', postController.put);
+router.use((req,res)=>{
+    res.status(404).sendFile(path+'/404.html');
+});
+
+
+
 
 module.exports = router;
