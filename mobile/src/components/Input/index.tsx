@@ -7,9 +7,11 @@ type Props = {
   title: string;
   placeholder?: string;
   password?: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
 }
 
-export function Input({ title, placeholder, password=false }: Props) {
+export function Input({ title, placeholder, password=false, value, onChangeText }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>
@@ -21,12 +23,17 @@ export function Input({ title, placeholder, password=false }: Props) {
             <TextInput 
               style={styles.input}
               secureTextEntry
+              placeholder='********'
+              value={value}
+              onChangeText={onChangeText}
             />
           )
           : (
             <TextInput 
               style={styles.input}
               placeholder={placeholder}
+              value={value}
+              onChangeText={onChangeText}
             />
           )
       }

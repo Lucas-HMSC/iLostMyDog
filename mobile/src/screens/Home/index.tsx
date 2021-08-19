@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableWithoutFeedback, Alert } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { Button } from '../../components/Button';
@@ -38,14 +38,14 @@ export function Home() {
             primary
             onPress={handleClickLogin}
           />
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={handleClickRegister}
           >
             <Text style={styles.registerContainer}>
               ou {''}
               <Text style={styles.registerLink}>Cadastrar</Text>
             </Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContinue}>
