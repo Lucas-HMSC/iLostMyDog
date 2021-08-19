@@ -2,34 +2,37 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
+const authMiddleware = require('./middleware/authMiddleware');
 const postController = require('./controllers/postController');
 const imageController = require('./controllers/imageController');
 const loginController = require('./controllers/loginController.js');
-const mysql = require('./services/MySqlService');
+const passport = require('passport');
+const mySqlService = require('./services/MySqlService.js');
 
-console.log(mysql.executeQuery("SELECT * FROM users"));
+
 
 let path=__dirname + '/views';
-let errorPage = path + '/404.html';
 
-
-router.post('/login', loginController.initialize);
+router.post('/login', passport.authenticate('local'),(req,res)=>{
+    res.send('Login realizado com sucesso');
+});
 
 router.post('/cadastro', loginController.cadastro);
 
-router.get('/listar', postController.getAll);
-router.get('/listar/:id', postController.getAll);
+router.get('/listar',authMiddleware.isAuthenticated, postController.getAll);
+router.get('/listar/:id',authMiddleware.isAuthenticated, postController.getAll);
 
-router.post('/add', postController.post);
-router.delete('/delete/:id', postController.delete);
-router.put('/update/:id', postController.put);
+router.post('/add',authMiddleware.isAuthenticated, postController.post);
+router.delete('/delete/:id',authMiddleware.isAuthenticated, postController.delete);
+router.put('/update/:id',authMiddleware.isAuthenticated, postController.put);
 
-router.post('/upload', imageController.uploadImagem);
+router.post('/upload',authMiddleware.isAuthenticated, imageController.uploadImagem);
 
 
 
 router.use((req,res)=>{
-    res.status(404).sendFile(path+'/404.html');
+    console.log(req);
+    res.status(404).send("Rota Invalida");
 });
 
 

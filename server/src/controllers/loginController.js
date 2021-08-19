@@ -1,8 +1,3 @@
-const bcrypt = require('bcrypt');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-let users = [];
-
 class loginController{
     async login(req,res){
         //logica do login
@@ -14,7 +9,7 @@ class loginController{
         
         users.push({
             id: Date.now().toString(),
-            name: req.body.username,
+            username: req.body.username,
             email: req.body.email,
             password: hashPassword
         })
@@ -23,35 +18,21 @@ class loginController{
 
     }
 
-    async checkAuthenticated(req,res,next){
-        if(req.isAuthenticated())   {
-            return next();
+    async validate(){
+        try {
+            console.log('wadawdawd');
+         ()=>{passport.authenticate('local',{
+                successMessage: 'Sucesso',
+                failureMessage: 'Erro'
+            })    
+        }        
+        } catch (error) {
+          console.log(error)  ;
         }
+
         
     }
 
-    async initialize(passport, getUserByEmail, getUserById){
-        const authenticateUser = async (email,password,done) => {
-            const user = getUserByEmail(email);
-            if(user == null){
-                return done(null,false, {mesage : 'Usuário não encontrado'});
-            }
-    
-            try {
-                if(await bcrypt.compare(password,user.password)){
-                    return done(null,user);
-                }else{
-                    return done(null,false, {message: "Dados incorretos"});
-                }
-            } catch (error) {
-                return done(e);
-            }
-        };
-        passport.use(new LocalStrategy({usernameField: 'email'},authenticateUser))
-        passport.serializeUser((user,done) => done(null,user.id));
-        passport.deserializeUser((id,done) => {
-            return done(null,getUserById(id));
-        });
-    }
+
 }
 module.exports = new loginController;

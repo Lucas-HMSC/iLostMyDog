@@ -1,45 +1,41 @@
 const mysql = require('mysql');
 require('dotenv').config({path: __dirname +"/./../.env"});
-const { connect } = require('../routes');
 
-
-const con = mysql.createConnection({
+const config = {
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DB_NAME
-});
-
-con.connect((err)=>{
-    if(err){
-        console.log("Erro ao conectar na base de dados...", err);
-        return
-    }
-    console.log("Conexão estabelecida");
-});
-
-con.end((err)=>{
-    if(err){
-        console.log("Erro ao finalizar conexão....",err);
-        return
-    }
-    console.log("Conexão encerrada com sucesso");
-});
+}
 
 class MySqlService{
-    async executeQuery(select){
+    async connectMysql(){
+        const con = mysql.createConnection(config);
+        return con;
+    }
+
+    async executeQuery(req,res){
         try {
-            // con.connect();
-            con.query(select, (err,rows)=>{
-                if(err) throw err;
-                return rows;
+            var con = mysql.createConnection(config);
+            const {sql} = req.body;
+            con.query(sql, (err,rows)=>{
+                console.log(rows);
+                res.send(rows);
             });
-            // con.end();
         } catch (error) {
-            
+            console.log(error);
+        }
+         finally{
+            con.end((err)=>{
+                if(err){
+                    console.log("Erro ao finalizar conexão....",err);
+                    return
+                }
+                console.log("Conexão encerrada com sucesso");
+            });
         }
         
     }
 }
 
-module.exports = new MySqlService();
+module.exports = new MySqlService;
