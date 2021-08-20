@@ -1,7 +1,12 @@
+from PIL import Image
+
+image_test = Image.open("images/test-image.jpg")
+
+
 def project_name():
     print('iLostMyDog')
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    project_name()
+    # project_name()
+    print(image_test)
