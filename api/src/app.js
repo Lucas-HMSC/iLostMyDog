@@ -12,7 +12,7 @@ const routes = require('./routes');
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-
+// Define a sessão do express
 app.use(session({
     secret: process.env.SESSION_ID,
     resave: false,

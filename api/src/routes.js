@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
+// Middleware para verificar se existe sessão
 const authMiddleware = require('./middleware/authMiddleware');
+
 const postController = require('./controllers/postController');
 const imageController = require('./controllers/imageController');
 const loginController = require('./controllers/loginController.js');
 const passport = require('passport');
-const mySqlService = require('./services/MySqlService.js');
 
 
 
@@ -29,7 +30,7 @@ router.put('/update/:id',authMiddleware.isAuthenticated, postController.put);
 router.post('/upload',authMiddleware.isAuthenticated, imageController.uploadImagem);
 
 
-
+// vai enviar essa resposta caso não caia em nenhuma rota
 router.use((req,res)=>{
     console.log(req);
     res.status(404).send("Rota Invalida");
