@@ -15,6 +15,3 @@ python3 classifier.py --image_path imagem.png
 ```python
 python3 classifier.py --image_path imagem.png > result.txt
 ```
-
-Obs: Bibliotecas necessárias para a execução do projeto estão no arquivo **requirements.txt**
-
