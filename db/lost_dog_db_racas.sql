@@ -16,32 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `info_dono`
+-- Table structure for table `racas`
 --
 
-DROP TABLE IF EXISTS `info_dono`;
+DROP TABLE IF EXISTS `racas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `info_dono` (
-  `ID_CADASTRO` int NOT NULL,
-  `CIDADE` varchar(30) DEFAULT NULL,
-  `TELEFONE` varchar(11) DEFAULT NULL,
-  `EMAIL` varchar(30) DEFAULT NULL,
-  `NOME` varchar(40) DEFAULT NULL,
-  `ID_CAO` int DEFAULT NULL,
-  PRIMARY KEY (`ID_CADASTRO`),
-  KEY `ID_CAO` (`ID_CAO`),
-  CONSTRAINT `info_dono_ibfk_1` FOREIGN KEY (`ID_CAO`) REFERENCES `info_dog` (`ID_CAO`)
+CREATE TABLE `racas` (
+  `ID_RACA` int NOT NULL,
+  `RACA` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ID_RACA`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `info_dono`
+-- Dumping data for table `racas`
 --
 
-LOCK TABLES `info_dono` WRITE;
-/*!40000 ALTER TABLE `info_dono` DISABLE KEYS */;
-/*!40000 ALTER TABLE `info_dono` ENABLE KEYS */;
+LOCK TABLES `racas` WRITE;
+/*!40000 ALTER TABLE `racas` DISABLE KEYS */;
+INSERT INTO `racas` VALUES (1,'ROTTWEILER'),(2,'BULLDOG'),(3,'PUG'),(4,'PASTOR ALEMAO'),(5,'LABRADOR');
+/*!40000 ALTER TABLE `racas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-02 18:25:06
+-- Dump completed on 2021-10-02 18:25:05
