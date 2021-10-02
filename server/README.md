@@ -7,11 +7,7 @@
 - Labrador
 
 ### Para executar a aplicação, rode o seguinte comando:
-```python
-python3 classifier.py --image_path imagem.png
-```
-
-### Para imprimir o resultado em um arquivo externo:
-```python
-python3 classifier.py --image_path imagem.png > result.txt
+```bash
+./script.sh ../images/teste1.jpg 
+# Será criado um arquivo JSON com o nome da raça identificada na imagem passada como argumento
 ```
