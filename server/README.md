@@ -5,3 +5,6 @@
 - [ 3 ] Pug
 - [ 4 ] Pastor Alemão
 - [ 5 ] Labrador
+
+### Requirements
+* tensorflow==2.6.0
