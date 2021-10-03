@@ -1,5 +1,5 @@
 #!/bin/bash
-#Script para criação de arquivo JSON com o nome da raça identificada
+#Script para criação de arquivo com o id da raça identificada
 
 source ./venv/bin/activate
 
