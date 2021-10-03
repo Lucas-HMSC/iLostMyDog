@@ -4,7 +4,7 @@
 source ./venv/bin/activate
 
 print_in_json() {
-	python3 classifier.py --image_path $1 > result.json
+	python3 classifier.py --image_path $1 > result.txt
 }
 
 print_in_json $1

@@ -15,11 +15,6 @@ image = tf.compat.v1.gfile.FastGFile(FLAGS.image_path, 'rb').read()
 labels = [line.rstrip() for line in tf.compat.v1.gfile.GFile("labels.txt")]
 
 
-# Função para formatar a string em formato JSON
-def print_in_json(breed_label):
-    print('{\n "breed_name": "%s" \n}' % breed_label)
-
-
 with tf.compat.v1.gfile.FastGFile(model_path, 'rb') as f:
     graph_def = tf.compat.v1.GraphDef()
     graph_def.ParseFromString(f.read())
@@ -40,7 +35,6 @@ with tf.compat.v1.Session() as sess:
     #   score = predictions[0][node_id]
     #   print(f'{breed_name} ({score:.2%})')
 
-    # Imprime somente o nome da raça
-    breed_name = labels[predicted[0]]
-    # print(breed_name)
-    print_in_json(breed_name)
+    # Imprime somente o id da raça
+    breed_id = labels[predicted[0]]
+    print(breed_id)
