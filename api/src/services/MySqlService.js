@@ -14,28 +14,30 @@ class MySqlService{
         return con;
     }
 
-    async executeQuery(req,res){
+    async executeQuery(query){
         try {
-            var con = mysql.createConnection(config);
-            const {sql} = req.body;
-            con.query(sql, (err,rows)=>{
-                console.log(rows);
-                res.send(rows);
-            });
+            const con = mysql.createConnection(config);
+            return new Promise((resolve,reject)=>{
+                
+                con.query(query.sql,(error,result,fields) => {
+                    con.destroy();
+                    if(error){
+                        console.log(error);
+                        return reject(error);
+                    }
+    
+                    console.log('Sucesso');
+                    resolve(result);
+                });
+            })
+
         } catch (error) {
             console.log(error);
-        }
-         finally{
-            con.end((err)=>{
-                if(err){
-                    console.log("Erro ao finalizar conexão....",err);
-                    return
-                }
-                console.log("Conexão encerrada com sucesso");
-            });
+            return error;
         }
         
     }
+
 }
 
 module.exports = new MySqlService;

@@ -1,2 +1,4 @@
 server/venv/*
 server/.idea/*
+api/node_modules/*
+server/node_modules/*
