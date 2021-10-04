@@ -1,30 +1,26 @@
-const { exec } = require('child_process');
-const path = require("path");
+const { exec } = require('child_process')
+const path = require("path")
 const fs = require("fs")
+const { brotliCompress } = require('zlib')
 
-const image_path = '../images/teste2.jpg';
+const image_path = '../images/teste3.jpg'
+let breed_id = 0
 
-const generateJSON = (image_path) => {
-  exec(`./script.sh ${path.resolve(image_path)}`, (error, stdout, stderr) => {
+function classifier(image_path) {
+  exec(`./script.sh ${path.resolve(image_path)}`, (error) => {
     if (error) {
       console.log(`Error: ${error.message}`)
       return 
     }
-  
-    return 
+    breed_id = getBreedId()
   });
 }
 
-const getBreedName = () => {
-  fs.readFile('./result.json', 'utf8', (err, data) => {
-    if (err) console.log('Erro ao ler JSON.')
-
-    const result = JSON.parse(data)
-    console.log(result.breed_name)
-  })
+const getBreedId = () => {  
+  return Number(fs.readFileSync('./result.txt', 'utf8')[0])
 }
 
-generateJSON(image_path);
+classifier(image_path)
 setTimeout(() => {
-  getBreedName()
+  console.log(breed_id)
 }, 3000)
