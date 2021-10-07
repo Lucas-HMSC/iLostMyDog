@@ -14,6 +14,7 @@ import { styles } from './styles';
 
 export function Register() {
   const [name, setName] = useState('');
+  const [telephone, setTelephone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -109,6 +110,15 @@ export function Register() {
     setPawLoading(false);
   }
 
+  function maskTelephone(text: string) {
+    setTelephone(text.replace(/\D/g, ''));
+    if (text.length === 11) {
+      setTelephone(text.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/g, '($1) $2 $3-$4'));
+    } else if (text.length > 11) {
+      setTelephone(text.slice(0, 16));
+    }
+  }
+
   if (dogLoading) {
     return <DogLoading />
   }
@@ -144,6 +154,12 @@ export function Register() {
               placeholder='Nome Sobrenome'
               value={name}
               onChangeText={(text) => setName(text)}
+            />
+            <Input
+              title='Telefone'
+              placeholder='(12) 9 9999-9999'
+              value={telephone}
+              onChangeText={(text) => maskTelephone(text)}
             />
             <Input
               title='E-mail'
