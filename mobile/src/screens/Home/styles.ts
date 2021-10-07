@@ -13,7 +13,17 @@ export const styles = StyleSheet.create({
   image: {
     height: 250,
     width: 250,
-    marginTop: 150,
+    marginTop: 100,
+  },
+
+  title: {
+    marginBottom: 10,
+  },
+
+  txtTitle: {
+    fontFamily: theme.fonts.nunito700,
+    color: theme.colors.black1,
+    fontSize: 36,
   },
   
   registerContainer: {

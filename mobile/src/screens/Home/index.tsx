@@ -31,6 +31,12 @@ export function Home() {
         resizeMode= 'contain'
       />
 
+      <View style={styles.title}>
+        <Text style={styles.txtTitle}>
+          iLostMyDog
+        </Text>
+      </View>
+
       <View>
         <View>
           <Button
