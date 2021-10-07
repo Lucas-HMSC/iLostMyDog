@@ -1,3 +1,5 @@
+const sql = require('../services/MySqlService');
+
 class loginController{
     async login(req,res){
         //logica do login
@@ -5,22 +7,22 @@ class loginController{
     }
 
     async cadastro(req,res){
-        const hashPassword = await bcrypt.hash(req.body.password, 10);
-        
-        users.push({
-            id: Date.now().toString(),
-            username: req.body.username,
-            email: req.body.email,
-            password: hashPassword
-        })
-        console.log(users);
-        res.send({"message" : "Registro realizado com sucesso"});
+        try {
+            const {cidade,telefone,email,nome} = req.body;
+            // const hashPassword = await bcrypt.hash(req.body.password, 10);
+            
+            const query ={sql:`INSERT INTO info_dono (CIDADE, TELEFONE, EMAIL, NOME) VALUES ('${cidade}','${telefone}','${email}','${nome}')`};
+            
+            const response = await sql.executeQuery(query);
+            res.send(response);
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 
     async validate(){
         try {
-            console.log('wadawdawd');
          ()=>{passport.authenticate('local',{
                 successMessage: 'Sucesso',
                 failureMessage: 'Erro'
