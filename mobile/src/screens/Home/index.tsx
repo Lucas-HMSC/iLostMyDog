@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import { Button } from '../../components/Button';
 
 import dogIcon from '../../assets/dog-icon.png';
+import dogTitle from '../../assets/dog-title.png';
 
 import { styles } from './styles';
 
@@ -25,16 +26,17 @@ export function Home() {
 
   return (
     <View style={styles.container}>
-      <Image 
-        source={ dogIcon }
-        style={ styles.image }
-        resizeMode= 'contain'
-      />
-
-      <View style={styles.title}>
-        <Text style={styles.txtTitle}>
-          iLostMyDog
-        </Text>
+      <View>
+        <Image
+          source={ dogIcon }
+          style={ styles.image }
+          resizeMode= 'contain'
+        />
+        <Image
+          source={ dogTitle }
+          style={ styles.imageTitle }
+          resizeMode= 'contain'
+        />
       </View>
 
       <View>

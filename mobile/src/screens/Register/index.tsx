@@ -15,6 +15,7 @@ import { styles } from './styles';
 export function Register() {
   const [name, setName] = useState('');
   const [telephone, setTelephone] = useState('');
+  const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -38,6 +39,8 @@ export function Register() {
 
   function handleCreateAccount() {
     console.log('Nome:', name);
+    console.log('Telefone 1:', telephone);
+    console.log('Telefone 2:', telephoneWithoutMask);
     console.log('E-mail:', email);
     console.log('Senha:', password);
     console.log('Latitude:', latitude);
@@ -113,6 +116,7 @@ export function Register() {
   function maskTelephone(text: string) {
     setTelephone(text.replace(/\D/g, ''));
     if (text.length === 11) {
+      setTelephoneWithoutMask(Number(text));
       setTelephone(text.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/g, '($1) $2 $3-$4'));
     } else if (text.length > 11) {
       setTelephone(text.slice(0, 16));
