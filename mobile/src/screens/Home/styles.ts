@@ -7,23 +7,23 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
 
   image: {
     height: 250,
     width: 250,
-    marginTop: 150,
+    marginTop: 20,
   },
 
   imageTitle: {
     height: 36,
     width: 250,
-    marginTop: 25,
+    marginTop: 20,
   },
   
   registerContainer: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 14,
     fontFamily: theme.fonts.nunito700,
     textAlign: 'center',
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   },
 
   buttonContinue: {
-    marginTop: 24,
-    marginBottom: 70,
+    marginTop: 25,
+    marginBottom: 25,
   },
 });
