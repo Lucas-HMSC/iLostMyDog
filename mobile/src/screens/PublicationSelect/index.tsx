@@ -8,7 +8,7 @@ import { ButtonCard } from '../../components/ButtonCard';
 
 import { styles } from './styles';
 
-export function SelectPublication() {
+export function PublicationSelect() {
   const navigation = useNavigation();
 
   function handleGoBack() {

@@ -13,7 +13,7 @@ export function Welcome() {
   const navigation = useNavigation();
 
   function handleSelectPublication() {
-    navigation.navigate('SelectPublication');
+    navigation.navigate('PublicationSelect');
   }
 
   return (
