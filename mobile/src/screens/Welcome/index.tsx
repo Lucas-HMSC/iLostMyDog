@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ScrollView, SafeAreaView, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
@@ -9,6 +10,11 @@ import { Button } from '../../components/Button';
 import { styles } from './styles';
 
 export function Welcome() {
+  const navigation = useNavigation();
+
+  function handleSelectPublication() {
+    navigation.navigate('SelectPublication');
+  }
 
   return (
     <SafeAreaView style={styles.scrollview}>
@@ -33,6 +39,7 @@ export function Welcome() {
             <ButtonCard
               title='Publicar'
               arrColor={0}
+              onPress={handleSelectPublication}
             />
             <ButtonCard
               title='Minhas Publicações'
