@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { PublicationSelect } from '../screens/PublicationSelect';
+import { PublicationDogFounded } from '../screens/PublicationDogFounded';
 import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
@@ -56,6 +57,11 @@ export function StackRoutes() {
       <Screen 
         name='PublicationSelect'
         component={PublicationSelect}
+      />
+
+      <Screen 
+        name='PublicationDogFounded'
+        component={PublicationDogFounded}
       />
     </Navigator>
   );
