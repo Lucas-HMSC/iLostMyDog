@@ -23,7 +23,7 @@ export function Continue() {
 
     setTimeout(() => {
       setLoading(false);
-      navigation.navigate('Home');
+      navigation.navigate('Welcome');
     }, 1000);
   }
 
