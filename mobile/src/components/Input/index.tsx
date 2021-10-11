@@ -8,10 +8,11 @@ type Props = {
   placeholder?: string;
   password?: boolean;
   value: string;
+  disabled?: boolean;
   onChangeText: (text: string) => void;
 }
 
-export function Input({ title, placeholder, password=false, value, onChangeText }: Props) {
+export function Input({ title, placeholder, password=false, value, disabled = false, onChangeText }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>
@@ -34,6 +35,7 @@ export function Input({ title, placeholder, password=false, value, onChangeText 
               placeholder={placeholder}
               value={value}
               onChangeText={onChangeText}
+              editable={!disabled}
             />
           )
       }

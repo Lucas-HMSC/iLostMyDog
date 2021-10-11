@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
+import { DogLoading } from '../../components/DogLoading';
 import { InputImage } from '../../components/InputImage';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -15,6 +16,7 @@ export function PublicationDogLost() {
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -30,6 +32,19 @@ export function PublicationDogLost() {
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handlePublicationView() {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      navigation.navigate('PublicationView');
+    }, 1000);
+  }
+
+  if (loading) {
+    return <DogLoading />
   }
 
   return (
@@ -79,6 +94,7 @@ export function PublicationDogLost() {
           <View style={styles.button}>
             <Button
               title='Publicar'
+              onPress={handlePublicationView}
               primary
             />
           </View>

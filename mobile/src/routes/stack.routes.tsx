@@ -1,9 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { PublicationSelect } from '../screens/PublicationSelect';
 import { PublicationDogFound } from '../screens/PublicationDogFound';
 import { PublicationDogLost } from '../screens/PublicationDogLost';
+import { PublicationSelect } from '../screens/PublicationSelect';
+import { PublicationView } from '../screens/PublicationView';
 import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
@@ -68,6 +69,11 @@ export function StackRoutes() {
       <Screen 
         name='PublicationDogLost'
         component={PublicationDogLost}
+      />
+
+      <Screen 
+        name='PublicationView'
+        component={PublicationView}
       />
     </Navigator>
   );
