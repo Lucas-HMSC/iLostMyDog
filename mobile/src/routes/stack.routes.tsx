@@ -2,7 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { PublicationSelect } from '../screens/PublicationSelect';
-import { PublicationDogFounded } from '../screens/PublicationDogFounded';
+import { PublicationDogFound } from '../screens/PublicationDogFound';
+import { PublicationDogLost } from '../screens/PublicationDogLost';
 import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
@@ -60,8 +61,13 @@ export function StackRoutes() {
       />
 
       <Screen 
-        name='PublicationDogFounded'
-        component={PublicationDogFounded}
+        name='PublicationDogFound'
+        component={PublicationDogFound}
+      />
+
+      <Screen 
+        name='PublicationDogLost'
+        component={PublicationDogLost}
       />
     </Navigator>
   );

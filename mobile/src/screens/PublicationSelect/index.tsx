@@ -15,8 +15,12 @@ export function PublicationSelect() {
     navigation.goBack();
   }
 
-  function handlePublicationDogFounded() {
-    navigation.navigate('PublicationDogFounded');
+  function handlePublicationDogFound() {
+    navigation.navigate('PublicationDogFound');
+  }
+
+  function handlePublicationDogLost() {
+    navigation.navigate('PublicationDogLost');
   }
   
   return (
@@ -36,11 +40,12 @@ export function PublicationSelect() {
 
       <ButtonCard 
         title={`Encontrei um cachorro`}
-        onPress={handlePublicationDogFounded}
+        onPress={handlePublicationDogFound}
       />
 
       <ButtonCard 
         title={`Perdi um cachorro`}
+        onPress={handlePublicationDogLost}
       />
     </View>
   );

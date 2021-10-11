@@ -12,7 +12,7 @@ import { Input } from '../../components/Input';
 
 import { styles } from './styles';
 
-export function PublicationDogFounded() {
+export function PublicationDogFound() {
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
