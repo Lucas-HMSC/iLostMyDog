@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 50,
     paddingBottom: 70,
@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
 
   title: {
     flex: 1,
+    width: '100%',
     fontSize: 24,
     fontFamily: theme.fonts.nunito700,
     color: theme.colors.black1,
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
 
   divisor: {
     height: 2,
-    width: 270,
+    width: '100%',
     backgroundColor: '#DFDDDF',
     marginTop: 5,
   },
