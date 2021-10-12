@@ -21,6 +21,10 @@ export function PublicationsView() {
     navigation.goBack();
   }
 
+  function handlePublicationView() {
+    navigation.navigate('PublicationView');
+  }
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView>
@@ -39,30 +43,35 @@ export function PublicationsView() {
           <View style={styles.content}>
             <DivPublication 
               image={ImageExample4}
+              onPress={handlePublicationView}
               dogNameOrBreed='Mike'
               lost
             />
             
             <DivPublication 
               image={ImageExample3}
-              dogNameOrBreed='Thor'
+              onPress={handlePublicationView}
+              dogNameOrBreed='Nina'
               lost
             />
 
             <DivPublication 
               image={ImageExample2}
+              onPress={handlePublicationView}
               dogNameOrBreed='Bulldog'
               foundStreet
             />
 
             <DivPublication 
               image={ImageExample5}
-              dogNameOrBreed='Bob'
-              lost
+              onPress={handlePublicationView}
+              dogNameOrBreed='Labrador'
+              foundStreet
             />
 
             <DivPublication 
               image={ImageExample1}
+              onPress={handlePublicationView}
               dogNameOrBreed='Rottweiler'
               foundOwner
             />
