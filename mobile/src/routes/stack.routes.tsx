@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { PublicationDogFound } from '../screens/PublicationDogFound';
 import { PublicationDogLost } from '../screens/PublicationDogLost';
 import { PublicationSelect } from '../screens/PublicationSelect';
+import { PublicationsView } from '../screens/PublicationsView';
 import { PublicationView } from '../screens/PublicationView';
 import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
@@ -74,6 +75,11 @@ export function StackRoutes() {
       <Screen 
         name='PublicationView'
         component={PublicationView}
+      />
+
+      <Screen 
+        name='PublicationsView'
+        component={PublicationsView}
       />
     </Navigator>
   );

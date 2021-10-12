@@ -16,6 +16,10 @@ export function Welcome() {
     navigation.navigate('PublicationSelect');
   }
 
+  function handlePublicationsView() {
+    navigation.navigate('PublicationsView');
+  }
+
   return (
     <SafeAreaView style={styles.scrollview}>
       <ScrollView>
@@ -44,15 +48,17 @@ export function Welcome() {
             <ButtonCard
               title='Minhas Publicações'
               arrColor={1}
+              onPress={handlePublicationsView}
             />
             <ButtonCard
               title='Outras Publicações'
               arrColor={2}
-              
+              onPress={handlePublicationsView}
             />
             <ButtonCard
               title='Todas as Publicações'
               arrColor={2}
+              onPress={handlePublicationsView}
             />
           </View>
 
