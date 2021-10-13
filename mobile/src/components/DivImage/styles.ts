@@ -4,7 +4,7 @@ import { theme } from "../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     height: 150,
-    width: 270,
+    width: 300,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
@@ -12,8 +12,8 @@ export const styles = StyleSheet.create({
   },
 
   image: {
-    width: 268,
-    height: 148,
+    width: 300,
+    height: 150,
     borderRadius: 8,
   },
 });
