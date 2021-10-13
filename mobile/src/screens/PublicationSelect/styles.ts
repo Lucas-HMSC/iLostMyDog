@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
 
   buttonBack: {
     position: 'absolute',
-    top: 40,
+    top: 45,
     left: 20,
   },
 });
