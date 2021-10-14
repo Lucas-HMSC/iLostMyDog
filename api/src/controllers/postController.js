@@ -1,25 +1,20 @@
+const sql = require('../services/MySqlService');
 class postController{
-    getAll = (req,res,next) => {
-        // Consulta posts sem filtro
-        res.status(201).send("Requisição recebida");
-        //get do post
-    };
-
-    get = (req,res,next) => {
-        // Recebe um id para consultar
-        const params = req.params;
-        res.status(201).send("Requisição recebida");
-        //get do post
+    async get(req,res,next){
+        let {id_cao} = req.body;
+        id_cao = id_cao != null ? id_cao : '1';
+        const query ={sql:`SELECT * FROM info_dog WHERE (ID_CAO = '${id_cao}' OR 1 = '${id_cao}')`};
+        const response = await sql.executeQuery(query);
+        res.status(201).send(response);
     };
     
-    post = (req,res,next) => {
-        // Recebe os parametros de post para inserir
-        const post = req.body;
-        res.status(201).send("Requisição recebida");
-        //insert do post
+    async post(req,res,next){
+        const query ={sql:`INSERT INTO info_dog VALUES ('${req.body.id_cao}','${req.body.data}','${req.body.hora}','${req.body.area}','${req.body.cidade}','${req.body.id_raca}','${req.body.usr_cadastro}','${req.body.id_cadastro}','${req.body.imagem}')`};
+        const response = await sql.executeQuery(query);
+        res.status(201).send("Publicação Inserida com sucesso");
     };
 
-    put = (req,res,next) =>{
+    async put(req,res,next){
         // Recebe os parametros de post para atualizar
         const put = req.body;
         let id = req.params.id;
@@ -27,10 +22,10 @@ class postController{
         //update do post
     };
 
-    delete = (req,res,next) =>{
-        // Recebe o id do post para deletar
-        const del = req.body;
-        let id = req.params.id;
+    async delete(req,res,next){
+        let {id_cao} = req.body;
+        const query ={sql:`DELETE FROM info_dog WHERE ID_CAO = '${id_cao}'`};
+        const response = await sql.executeQuery(query);
         res.status(201).send(`Requisição recebida, id: ${id}`);
         //delete do post
     };

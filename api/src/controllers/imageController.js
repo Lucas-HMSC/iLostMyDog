@@ -1,11 +1,12 @@
+const imageService = require("../services/imageService");
+
 class imageController{
     
     async uploadImagem(req,res){
-        let route = req.body;
-        console.log(route);
-        res.status(201).send("Requisição recebida");
-        //logica do upload
-        //verificações
+        let {image_path} = req.body;
+        
+        const response = await imageService.classify();
+        res.status(201).send("Imagem salva");
     }
 }
 
