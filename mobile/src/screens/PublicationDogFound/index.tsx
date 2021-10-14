@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
 import { PawLoading } from '../../components/PawLoading';
+import { DogLoading } from '../../components/DogLoading';
 import { InputImage } from '../../components/InputImage';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -20,6 +21,7 @@ export function PublicationDogFound() {
   const [longitude, setLongitude] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
   const [pawLoading, setPawLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -94,8 +96,21 @@ export function PublicationDogFound() {
     navigation.goBack();
   }
 
+  function handlePublicationView() {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      navigation.navigate('PublicationView');
+    }, 1000);
+  }
+
   if (pawLoading) {
     return <PawLoading />
+  }
+
+  if (loading) {
+    return <DogLoading />
   }
 
   return (
@@ -161,6 +176,7 @@ export function PublicationDogFound() {
           <View style={styles.button}>
             <Button
               title='Publicar'
+              onPress={handlePublicationView}
               primary
             />
           </View>

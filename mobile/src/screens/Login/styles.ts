@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   inputBlock: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   button: {
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
 
   buttonBack: {
     position: 'absolute',
-    top: 40,
+    top: 45,
     left: 20,
   },
 });

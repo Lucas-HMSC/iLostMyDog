@@ -58,4 +58,12 @@ export const styles = StyleSheet.create({
     color: theme.colors.black2,
     textTransform: 'uppercase',
   },
+
+  inputGroup: {
+    marginBottom: 10,
+  },
+
+  fixMargin: {
+    marginTop: 10,
+  },
 });
