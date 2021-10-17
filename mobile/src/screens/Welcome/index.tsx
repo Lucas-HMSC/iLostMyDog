@@ -12,6 +12,10 @@ import { styles } from './styles';
 export function Welcome() {
   const navigation = useNavigation();
 
+  function handleMenuAccount() {
+    navigation.navigate('Account');
+  }
+
   function handleSelectPublication() {
     navigation.navigate('PublicationSelect');
   }
@@ -34,6 +38,7 @@ export function Welcome() {
             </Text>
             <BorderlessButton
               style={styles.buttonAccount}
+              onPress={handleMenuAccount}
             >
               <Feather
                 name='menu'
