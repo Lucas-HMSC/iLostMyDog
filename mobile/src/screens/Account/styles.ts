@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingVertical: 50,
+    paddingVertical: 40,
   },
 
   buttonBack: {
@@ -46,6 +46,6 @@ export const styles = StyleSheet.create({
     height: 2,
     width: 300,
     backgroundColor: '#FFE6E7',
-    marginTop: 5,
+    marginVertical: 5,
   },
 });
