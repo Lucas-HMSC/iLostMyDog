@@ -32,7 +32,7 @@ export function Welcome() {
               style={styles.buttonAccount}
             >
               <Feather
-                name='user'
+                name='menu'
                 size={25}
                 color='#FF8087'
               />
