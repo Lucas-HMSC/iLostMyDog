@@ -20,6 +20,10 @@ export function Welcome() {
     navigation.navigate('PublicationsView');
   }
 
+  function handleFAQ() {
+    navigation.navigate('FAQ');
+  }
+
   return (
     <SafeAreaView style={styles.scrollview}>
       <ScrollView>
@@ -65,6 +69,7 @@ export function Welcome() {
           <View style={styles.buttonContainer}>
             <Button
               title='Dúvidas'
+              onPress={handleFAQ}
             />
           </View>
         </View>

@@ -13,6 +13,7 @@ import { Continue } from '../screens/Continue';
 import { Welcome } from '../screens/Welcome';
 import { Login } from '../screens/Login';
 import { Home } from '../screens/Home';
+import { FAQ } from '../screens/FAQ';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -80,6 +81,11 @@ export function StackRoutes() {
       <Screen 
         name='PublicationsView'
         component={PublicationsView}
+      />
+
+      <Screen 
+        name='FAQ'
+        component={FAQ}
       />
     </Navigator>
   );
