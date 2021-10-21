@@ -20,8 +20,7 @@ router.post('/login', passport.authenticate('local'),(req,res)=>{
 
 router.post('/cadastro', loginController.cadastro);
 
-router.get('/listar',authMiddleware.isAuthenticated, postController.getAll);
-router.get('/listar/:id',authMiddleware.isAuthenticated, postController.getAll);
+router.get('/listar',authMiddleware.isAuthenticated, postController.get);
 
 router.post('/add',authMiddleware.isAuthenticated, postController.post);
 router.delete('/delete/:id',authMiddleware.isAuthenticated, postController.delete);

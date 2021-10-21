@@ -7,7 +7,11 @@ const image_path = '../images/teste3.jpg'
 let breed_id = 0
 
 function classifier(image_path) {
-  exec(`./script.sh ${path.resolve(image_path)}`, (error) => {
+  const shFunc = `script.sh ${path.resolve(image_path)}`;
+  exec(shFunc,
+    {
+      cwd: `${path.resolve(__dirname)}`
+    },(error) => {
     if (error) {
       console.log(`Error: ${error.message}`)
       return 
@@ -17,10 +21,20 @@ function classifier(image_path) {
 }
 
 const getBreedId = () => {  
-  return Number(fs.readFileSync('./result.txt', 'utf8')[0])
+  try {
+    const resultPath = path.resolve(__dirname) + '\\result.txt';
+    const response = (fs.readFileSync(resultPath, 'utf8'));
+    return Number(response);  
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 }
 
-classifier(image_path)
-setTimeout(() => {
-  console.log(breed_id)
-}, 3000)
+module.exports = function(){
+  classifier(image_path)
+  setTimeout(() => {
+    console.log(breed_id)
+  }, 3000)
+ 
+}

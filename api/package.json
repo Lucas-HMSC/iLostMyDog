@@ -25,7 +25,8 @@
     "express-session": "^1.17.2",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "grunt": "^1.4.1",
