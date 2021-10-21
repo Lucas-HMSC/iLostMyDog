@@ -11,8 +11,10 @@ import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
 import { Continue } from '../screens/Continue';
 import { Welcome } from '../screens/Welcome';
+import { Account } from '../screens/Account';
 import { Login } from '../screens/Login';
 import { Home } from '../screens/Home';
+import { FAQ } from '../screens/FAQ';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -80,6 +82,16 @@ export function StackRoutes() {
       <Screen 
         name='PublicationsView'
         component={PublicationsView}
+      />
+
+      <Screen 
+        name='FAQ'
+        component={FAQ}
+      />
+
+      <Screen 
+        name='Account'
+        component={Account}
       />
     </Navigator>
   );

@@ -12,12 +12,20 @@ import { styles } from './styles';
 export function Welcome() {
   const navigation = useNavigation();
 
+  function handleMenuAccount() {
+    navigation.navigate('Account');
+  }
+
   function handleSelectPublication() {
     navigation.navigate('PublicationSelect');
   }
 
   function handlePublicationsView() {
     navigation.navigate('PublicationsView');
+  }
+
+  function handleFAQ() {
+    navigation.navigate('FAQ');
   }
 
   return (
@@ -30,9 +38,10 @@ export function Welcome() {
             </Text>
             <BorderlessButton
               style={styles.buttonAccount}
+              onPress={handleMenuAccount}
             >
               <Feather
-                name='user'
+                name='menu'
                 size={25}
                 color='#FF8087'
               />
@@ -65,6 +74,7 @@ export function Welcome() {
           <View style={styles.buttonContainer}>
             <Button
               title='Dúvidas'
+              onPress={handleFAQ}
             />
           </View>
         </View>

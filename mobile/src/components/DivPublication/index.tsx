@@ -26,10 +26,6 @@ export function DivPublication({
     >
       <Pressable
         onPress={onPress}
-        android_ripple={{
-          color: '#D6D4D7',
-          borderless: true,
-        }}
       >
         <Image
           source={image}

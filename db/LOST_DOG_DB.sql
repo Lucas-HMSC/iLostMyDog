@@ -2,14 +2,11 @@ CREATE DATABASE LOST_DOG_DB;
 
 USE LOST_DOG_DB;
 CREATE TABLE INFO_DOG (ID_CAO INT NOT NULL AUTO_INCREMENT, 
-						DATA DATE, 
-                        HORA TIME, 
                         AREA INT, 
                         CIDADE VARCHAR(30), 
                         ID_RACA INT, 
                         USR_CADASTRO INT, 
-                        ID_CADASTRO INT, 
-                        IMAGEM VARCHAR(30),
+                        ID_CADASTRO INT,
                         PRIMARY KEY (ID_CAO)
                         );
                
@@ -37,6 +34,23 @@ INSERT INTO RACAS (ID_RACA, RACA) VALUES (1, 'ROTTWEILER'), (2, 'BULLDOG'), (3, 
 
 ALTER TABLE INFO_DOG
 ADD FOREIGN KEY (ID_RACA) REFERENCES RACAS(ID_RACA);
+
+USE LOST_DOG_DB;
+CREATE TABLE POSTAGENS (ID_POST INT NOT NULL AUTO_INCREMENT,
+						DATA DATE,
+                        HORA TIME,
+                        ID_CAO INT,
+                        FOREIGN KEY (ID_CAO) REFERENCES INFO_DOG(ID_CAO),
+                        PRIMARY KEY (ID_POST)
+						);
+
+USE LOST_DOG_DB;
+CREATE TABLE IMAGENS (ID_IMAGENS INT NOT NULL AUTO_INCREMENT,
+					  PATH VARCHAR(30),
+                      ID_POST INT,
+                      FOREIGN KEY (ID_POST) REFERENCES POSTAGENS(ID_POST),
+                      PRIMARY KEY (ID_IMAGENS)
+                    );
 
 SELECT * FROM INFO_DOG;
 SELECT * FROM INFO_DONO;
