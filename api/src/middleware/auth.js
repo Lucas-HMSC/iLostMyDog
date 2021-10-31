@@ -13,16 +13,17 @@ let users = [{
 
 module.exports = function(passport){
     async function findUser(username){
-        const query ={sql:`SELECT * FROM info_dono`};
+        const query ={sql:`SELECT * FROM USUARIOS`};
         const response = await sql.executeQuery(query);
         let users = {};
         response.forEach(row =>{
             if(username == row.NOME){
                 users = {
-                    id: row.ID_CADASTRO,
+                    id: row.ID_USUARIO,
                     nome: row.NOME,
-                    email: row.EMAIL,
                     telefone: row.TELEFONE,
+                    email: row.EMAIL,
+                    area: row.AREA,
                     cidade: row.CIDADE
                 }
             }
@@ -32,13 +33,13 @@ module.exports = function(passport){
     }
 
     async function findUserById(id){
-        const query ={sql:`SELECT * FROM info_dono`};
+        const query ={sql:`SELECT * FROM USUARIOS`};
         const response = await sql.executeQuery(query);
         let  users ={};
         response.forEach(row =>{
-            if(id == row.ID_CADASTRO){
+            if(id == row.ID_USUARIO){
                 users = {
-                    id: row.ID_CADASTRO,
+                    id: row.ID_USUARIO,
                     nome: row.NOME,
                     email: row.EMAIL,
                     telefone: row.TELEFONE,
