@@ -8,10 +8,10 @@ class loginController{
 
     async cadastro(req,res){
         try {
-            const {cidade,telefone,email,nome} = req.body;
+            const { nome, telefone, email, area, cidade } = req.body;
             // const hashPassword = await bcrypt.hash(req.body.password, 10);
             
-            const query ={sql:`INSERT INTO info_dono (CIDADE, TELEFONE, EMAIL, NOME) VALUES ('${cidade}','${telefone}','${email}','${nome}')`};
+            const query ={sql:`INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, AREA, CIDADE) VALUES ('${nome}','${telefone}','${email}','${area}','${cidade}')`};
             
             const response = await sql.executeQuery(query);
             res.send(response);
