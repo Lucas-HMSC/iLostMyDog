@@ -10,6 +10,8 @@ import { PawLoading } from '../../components/PawLoading';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
+import { api } from '../../services/api';
+
 import { styles } from './styles';
 
 export function Register() {
@@ -20,6 +22,7 @@ export function Register() {
   const [password, setPassword] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [city, setCity] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
   const [dogLoading, setDogLoading] = useState(false);
   const [pawLoading, setPawLoading] = useState(false);
@@ -37,30 +40,46 @@ export function Register() {
     check();
   }, []);
 
-  function handleCreateAccount() {
-    console.log('Nome:', name);
-    console.log('Telefone 1:', telephone);
-    console.log('Telefone 2:', telephoneWithoutMask);
-    console.log('E-mail:', email);
-    console.log('Senha:', password);
-    console.log('Latitude:', latitude);
-    console.log('Longitude:', longitude);
+  async function handleCreateAccount() {
+    const newUser = {
+      nome: name,
+      telefone: telephoneWithoutMask,
+      email: email,
+      area: `${latitude},${longitude}`,
+      cidade: city
+    };
+    
+    setPawLoading(true);
+    await api
+      .post('/cadastro', newUser)
+      .then(() => {
+        Alert.alert(
+          'Sucesso!',
+          `Conta criada, ${name}!`,
+          [{
+            text: 'Certo 🐕!',
+            onPress: () => {
+              setDogLoading(true);
 
-    Alert.alert(
-      'Sucesso!',
-      `Conta criada, ${name}!`,
-      [{
-        text: 'Certo 🐕!',
-        onPress: () => {
-          setDogLoading(true);
-
-          setTimeout(() => {
-            setDogLoading(false);
-            navigation.navigate('Home');
-          }, 1000);
-        }
-      }]
-    );
+              setTimeout(() => {
+                setDogLoading(false);
+                navigation.navigate('Welcome');
+              }, 1000);
+            }
+          }]
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        Alert.alert(
+          'Oh não :(',
+          'Houve um problema e não foi possível criar sua conta.',
+          [{
+            text: 'Tentar novamente'
+          }]
+        );
+      })
+      .finally(() => setPawLoading(false))
   }
 
   async function handleAutoFill() {
@@ -100,16 +119,26 @@ export function Register() {
     }
 
     setPawLoading(true);
+
     const { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.High
     });
 
     if (coords) {
       const { latitude, longitude } = coords;
+      
+      const address = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      // console.log(address);
 
       setLatitude(String(latitude));
       setLongitude(String(longitude));
+      setCity(address[0].subregion || '');
     }
+
     setPawLoading(false);
   }
 
