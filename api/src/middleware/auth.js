@@ -13,11 +13,11 @@ let users = [{
 
 module.exports = function(passport){
     async function findUser(username){
-        const query ={sql:`SELECT * FROM USUARIOS`};
+        const query = {sql:`SELECT * FROM USUARIOS`};
         const response = await sql.executeQuery(query);
         let users = {};
-        response.forEach(row =>{
-            if(username == row.NOME){
+        response.forEach(row => {
+            if(username === row.NOME){
                 users = {
                     id: row.ID_USUARIO,
                     nome: row.NOME,
@@ -29,21 +29,20 @@ module.exports = function(passport){
             }
         })
         return users;
-        
     }
 
     async function findUserById(id){
-        const query ={sql:`SELECT * FROM USUARIOS`};
+        const query = {sql:`SELECT * FROM USUARIOS`};
         const response = await sql.executeQuery(query);
-        let  users ={};
-        response.forEach(row =>{
-            if(id == row.ID_USUARIO){
+        let users = {};
+        response.forEach(row => {
+            if(id === row.ID_USUARIO){
                 users = {
                     id: row.ID_USUARIO,
                     nome: row.NOME,
                     email: row.EMAIL,
                     telefone: row.TELEFONE,
-                    cidade: row.CIDADe
+                    cidade: row.CIDADE
                 }
             }
         })
@@ -55,23 +54,21 @@ module.exports = function(passport){
         done(null,user.id);
     });
 
-    passport.deserializeUser( async (id,done) => {
+    passport.deserializeUser(async (id,done) => {
         try {
             const user = await findUserById(id)
             return done(null,user);
-            
         } catch (error) {
             console.log(error);
             return done(error,null);
         }
     });    
 
-
     passport.use(new LocalStrategy({
         usernameField: 'username',
         passwordField: 'password'
     },
-    async (username,password,done)=>{
+    async (username,password,done) => {
         try {
             const user = await findUser(username);
             if(!user)
