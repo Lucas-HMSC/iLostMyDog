@@ -9,16 +9,15 @@ const config = {
 }
 
 class MySqlService{
-    async connectMysql(){
+    async connectMysql() {
         const con = mysql.createConnection(config);
         return con;
     }
 
-    async executeQuery(query){
+    async executeQuery(query) {
         try {
             const con = mysql.createConnection(config);
-            return new Promise((resolve,reject)=>{
-                
+            return new Promise((resolve,reject) => {
                 con.query(query.sql,(error,result,fields) => {
                     con.destroy();
                     if(error){
@@ -30,14 +29,11 @@ class MySqlService{
                     resolve(result);
                 });
             })
-
         } catch (error) {
             console.log(error);
             return error;
         }
-        
     }
-
 }
 
 module.exports = new MySqlService;
