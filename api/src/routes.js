@@ -22,7 +22,7 @@ router.get('/listar', authMiddleware.isAuthenticated, postController.get);
 router.post('/listar', authMiddleware.isAuthenticated, postController.getPostById);
 
 router.post('/add',authMiddleware.isAuthenticated, postController.post);
-router.delete('/delete/:id',authMiddleware.isAuthenticated, postController.delete);
+router.post('/delete',authMiddleware.isAuthenticated, postController.delete);
 router.put('/update/:id',authMiddleware.isAuthenticated, postController.put);
 
 router.post('/upload',authMiddleware.isAuthenticated, imageController.uploadImagem);

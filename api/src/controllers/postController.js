@@ -4,13 +4,15 @@ class postController{
         const id_usuario = process.env.USER_ID;
         const query = {
             sql: `
-            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL FROM POSTAGENS P
+            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.SITUACAO FROM POSTAGENS P
             INNER JOIN CAES C
             ON P.ID_CAO = C.ID_CAO
             INNER JOIN RACAS R
             ON C.ID_RACA = R.ID_RACA
             INNER JOIN USUARIOS U
             ON P.ID_USUARIO = U.ID_USUARIO
+            INNER JOIN STATUS S
+            ON P.ID_STATUS = S.ID_STATUS
             WHERE P.ID_USUARIO = ${id_usuario}
         `};
         const response = await sql.executeQuery(query);
@@ -22,13 +24,15 @@ class postController{
 
         const query = {
             sql: `
-            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL FROM POSTAGENS P
+            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.SITUACAO FROM POSTAGENS P
             INNER JOIN CAES C
             ON P.ID_CAO = C.ID_CAO
             INNER JOIN RACAS R
             ON C.ID_RACA = R.ID_RACA
             INNER JOIN USUARIOS U
             ON P.ID_USUARIO = U.ID_USUARIO
+            INNER JOIN STATUS S
+            ON P.ID_STATUS = S.ID_STATUS
             WHERE P.ID_POST = ${id_post}
         `};
 
@@ -37,7 +41,7 @@ class postController{
     };
     
     async post(req,res,next) {
-        const { nome_cao, id_raca, area, cidade, image_path } = req.body;
+        const { nome_cao, id_raca, area, cidade, image_path, id_status } = req.body;
         const id_usuario = process.env.USER_ID;
         
         let query = { 
@@ -47,8 +51,8 @@ class postController{
 
         query = {
             sql: `
-            INSERT INTO POSTAGENS(AREA, CIDADE, DATA, ID_CAO, ID_USUARIO) 
-            VALUES ('${area}', '${cidade}', NOW(), ${id_cao}, ${id_usuario})
+            INSERT INTO POSTAGENS(AREA, CIDADE, DATA, ID_CAO, ID_USUARIO, ID_STATUS) 
+            VALUES ('${area}', '${cidade}', NOW(), ${id_cao}, ${id_usuario}, ${id_status})
         `};
         const { insertId: id_post } = await sql.executeQuery(query);
 
@@ -69,11 +73,13 @@ class postController{
     };
 
     async delete(req,res,next) {
-        let {id_post} = req.body;
-        const query ={sql:`DELETE FROM POSTAGENS WHERE ID_POST = '${id_post}'`};
-        const response = await sql.executeQuery(query);
-        res.status(201).send(`Requisição recebida, id: ${id}`);
-        //delete do post
+        let { id_post } = req.body;
+        const query = { 
+            sql:`UPDATE POSTAGENS SET ID_STATUS = 4 WHERE ID_POST = ${id_post}`
+        };
+        
+        await sql.executeQuery(query);
+        res.status(201).send('Post desativado.');
     };
 }
 
