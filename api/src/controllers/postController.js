@@ -65,21 +65,14 @@ class postController{
     };
 
     async put(req,res,next) {
-        // Recebe os parametros de post para atualizar
-        const put = req.body;
-        let id = req.params.id;
-        res.status(201).send(`Requisição recebida, id: ${id}`);
-        //update do post
-    };
+        const { id_post, id_status } = req.body;
 
-    async delete(req,res,next) {
-        let { id_post } = req.body;
         const query = { 
-            sql:`UPDATE POSTAGENS SET ID_STATUS = 4 WHERE ID_POST = ${id_post}`
+            sql:`UPDATE POSTAGENS SET ID_STATUS = ${id_status} WHERE ID_POST = ${id_post}`
         };
-        
         await sql.executeQuery(query);
-        res.status(201).send('Post desativado.');
+
+        res.status(201).send(`Publicação ${id_post} atualizada para o status ${id_status}`);
     };
 }
 
