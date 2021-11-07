@@ -1,4 +1,5 @@
 const sql = require('../services/MySqlService');
+
 class postController{
     async get(req,res,next) {
         const id_usuario = process.env.USER_ID;

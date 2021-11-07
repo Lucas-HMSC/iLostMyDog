@@ -3,9 +3,12 @@ const imageService = require("../services/imageService");
 class imageController{
     
     async uploadImagem(req,res){
-        let {image_path} = req.body;
+        let {data} = req.body;
         
         const response = await imageService.classify();
+        for(const d of data){
+            const upload = await imageService.upload(d);
+        }
         res.status(201).send("Imagem salva");
     }
 }
