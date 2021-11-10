@@ -3,7 +3,7 @@ import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    height: 100,
+    height: 200,
     width: 300,
     borderRadius: 8,
     alignItems: 'center',
@@ -12,6 +12,11 @@ export const styles = StyleSheet.create({
     backgroundColor: '#D6D4D7',
     borderWidth: 1,
     borderColor: theme.colors.black2,
+  },
+
+  image: {
+    height: 'auto',
+    width: '100%',
   },
 
   button: {

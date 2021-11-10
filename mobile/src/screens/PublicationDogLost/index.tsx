@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 
 import { DogLoading } from '../../components/DogLoading';
@@ -16,6 +17,7 @@ export function PublicationDogLost() {
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
+  const [image, setImage] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -35,12 +37,37 @@ export function PublicationDogLost() {
   }
 
   function handlePublicationView() {
-    setLoading(true);
+    // setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      navigation.navigate('PublicationView');
-    }, 1000);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   navigation.navigate('PublicationView');
+    // }, 1000);
+
+    console.log('image: ' + image);
+  }
+
+  async function handleSelectImage() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Eita, precisamos de acesso às suas fotos...');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri: image } = result;
+
+    setImage(image);
   }
 
   if (loading) {
@@ -68,7 +95,10 @@ export function PublicationDogLost() {
           <View style={styles.divisor} />
 
           <View>
-            <InputImage/>
+            <InputImage 
+              image={image}
+              handleSelectImage={handleSelectImage}
+            />
           </View>
 
           <View>
