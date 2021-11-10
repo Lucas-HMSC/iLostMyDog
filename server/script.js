@@ -3,7 +3,7 @@ const path = require("path")
 const fs = require("fs")
 const { brotliCompress } = require('zlib')
 
-const image_path = '../images/teste3.jpg'
+// const image_path = '../images/teste3.jpg'
 let breed_id = 0
 
 function classifier(image_path) {
@@ -34,7 +34,7 @@ const getBreedId = () => {
 module.exports = function(){
   classifier(image_path)
   setTimeout(() => {
-    console.log(breed_id)
+    return breed_id;
   }, 3000)
  
 }

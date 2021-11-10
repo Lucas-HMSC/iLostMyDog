@@ -1,8 +1,9 @@
+const imageService = require('../services/imageService');
 const sql = require('../services/MySqlService');
 
 class postController{
     async get(req,res,next) {
-        const id_usuario = process.env.USER_ID;
+        const id_usuario = req.user ? req.user.id : 1;
         const query = {
             sql: `
             SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.SITUACAO FROM POSTAGENS P
@@ -42,8 +43,13 @@ class postController{
     };
     
     async post(req,res,next) {
-        const { nome_cao, id_raca, area, cidade, image_path, id_status } = req.body;
-        const id_usuario = process.env.USER_ID;
+        const { nome_cao, area, cidade, id_status, data } = req.body;
+
+        const upload = await imageService.upload(data[0]);
+        const image_path = upload.payload["url"];
+        const id_raca = await imageService.classify(image_path);
+
+        const id_usuario = req.user ? req.user.id : 1;
         
         let query = { 
             sql: `INSERT INTO CAES(NOME, ID_RACA) VALUES ('${nome_cao}', ${id_raca})` 

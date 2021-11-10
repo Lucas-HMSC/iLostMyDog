@@ -28,7 +28,7 @@ module.exports = function(passport){
                 }
             }
         })
-        return users;
+        return Object.keys(users).length == 0 ? null : users;
     }
 
     async function findUserById(id){
@@ -71,7 +71,7 @@ module.exports = function(passport){
     async (username,password,done) => {
         try {
             const user = await findUser(username);
-            if(!user)
+            if(user == null || user.length == 0)
                 return done(null,false);
 
             // possivel validação via senha
