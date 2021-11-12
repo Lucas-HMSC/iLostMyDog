@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, SafeAreaView, Text } from 'react-native';
+import { View, ScrollView, SafeAreaView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
@@ -43,11 +43,10 @@ export function PublicationDogLost() {
     //   setLoading(false);
     //   navigation.navigate('PublicationView');
     // }, 1000);
-
-    console.log('image: ' + image);
+    console.log(image);
   }
 
-  async function handleSelectImage() {
+  async function handleSelectGalery() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== 'granted') {
@@ -68,6 +67,42 @@ export function PublicationDogLost() {
     const { uri: image } = result;
 
     setImage(image);
+  }
+
+  async function handleSelectCamera() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Eita, precisamos de acesso à sua camera...');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri: image } = result;
+
+    setImage(image);
+  }
+
+  function handleSelectGaleryOrCamera() {
+    Alert.alert('Imagens', 'Deseja adicionar uma foto da galeria ou abrir a camera?', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Galeria',
+        onPress: () => handleSelectGalery(),
+      },
+      { 
+        text: 'Camera', 
+        onPress: () => handleSelectCamera(),
+      },
+    ]);
   }
 
   if (loading) {
@@ -97,7 +132,7 @@ export function PublicationDogLost() {
           <View>
             <InputImage 
               image={image}
-              handleSelectImage={handleSelectImage}
+              handleSelectImage={handleSelectGaleryOrCamera}
             />
           </View>
 

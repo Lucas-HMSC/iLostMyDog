@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
@@ -17,6 +18,7 @@ export function PublicationDogFound() {
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
+  const [image, setImage] = useState<string>('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
@@ -105,6 +107,29 @@ export function PublicationDogFound() {
     }, 1000);
   }
 
+  async function handleSelectImage() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Eita, precisamos de acesso às suas fotos...');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri: image } = result;
+
+    setImage(image);
+  }
+
   if (pawLoading) {
     return <PawLoading />
   }
@@ -134,7 +159,10 @@ export function PublicationDogFound() {
           <View style={styles.divisor} />
 
           <View>
-            <InputImage/>
+            <InputImage 
+              image={image}
+              handleSelectImage={handleSelectImage}
+            />
           </View>
 
           <View>

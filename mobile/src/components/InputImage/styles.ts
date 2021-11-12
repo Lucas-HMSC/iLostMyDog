@@ -12,11 +12,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#D6D4D7',
     borderWidth: 1,
     borderColor: theme.colors.black2,
+    zIndex: 2,
   },
 
   image: {
-    height: 'auto',
-    width: '100%',
+    height: 200,
+    width: 300,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.black2,
+    zIndex: 1,
   },
 
   button: {

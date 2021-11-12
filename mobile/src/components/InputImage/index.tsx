@@ -22,7 +22,7 @@ export function InputImage({ image, handleSelectImage }: Props) {
             <Image 
               style={styles.image}
               source={{ uri: image }}
-              resizeMode='contain'
+              resizeMode='cover'
             /> : 
             <Feather
               name='image'
