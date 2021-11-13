@@ -45,7 +45,10 @@ class postController{
     async post(req,res,next) {
         const { nome_cao, area, cidade, id_status, data } = req.body;
 
-        const upload = await imageService.upload(data[0]);
+        //const upload = await imageService.upload(data[0]);
+        const upload = {payload:{
+            url: "../images/teste3.jpg"
+        }};
         const image_path = upload.payload["url"];
         const id_raca = await imageService.classify(image_path);
 

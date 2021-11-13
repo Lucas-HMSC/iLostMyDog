@@ -23,6 +23,7 @@ module.exports = function(passport){
                     nome: row.NOME,
                     telefone: row.TELEFONE,
                     email: row.EMAIL,
+                    password: row.HASH,
                     area: row.AREA,
                     cidade: row.CIDADE
                 }
@@ -41,6 +42,7 @@ module.exports = function(passport){
                     id: row.ID_USUARIO,
                     nome: row.NOME,
                     email: row.EMAIL,
+                    password: row.HASH,
                     telefone: row.TELEFONE,
                     cidade: row.CIDADE
                 }
@@ -75,9 +77,9 @@ module.exports = function(passport){
                 return done(null,false);
 
             // possivel validação via senha
-            // const isValid = bcrypt.compareSync(password,user.password);
-            // if(!isValid)
-            //     return done(null,false);
+            const isValid = bcrypt.compareSync(password,user.password);
+            if(!isValid)
+                return done(null,false);
 
             return done(null,user);
         } catch (error) {

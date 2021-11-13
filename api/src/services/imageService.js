@@ -7,9 +7,9 @@ const parser = multer({dest: 'public/uploads'})
 
 class imageService{
 
-    async classify(){
+    async classify(image_path){
         try{
-            classifier();
+            return await classifier(image_path);
         }catch(error){
             console.log(error);
         }

@@ -1,22 +1,19 @@
 const sql = require('../services/MySqlService');
+const bcrypt = require('bcrypt');
 
 class loginController{
-    async login(req,res){
-        //logica do login
-        res.send('Ok');
-    }
-
     async cadastro(req,res){
         try {
             const { nome, telefone, email, area, cidade } = req.body;
-            // const hashPassword = await bcrypt.hash(req.body.password, 10);
+            const hashPassword = await bcrypt.hash(req.body.senha, 10);
             
-            const query ={sql:`INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, AREA, CIDADE) VALUES ('${nome}','${telefone}','${email}','${area}','${cidade}')`};
+            const query ={sql:`INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, HASH, AREA, CIDADE) VALUES ('${nome}','${telefone}','${email}','${hashPassword}','${area}','${cidade}')`};
             
             const response = await sql.executeQuery(query);
-            res.send(response);
+            res.send({code: 200, message: 'Cadastro realizado com sucesso.'});
         } catch (error) {
-            console.log(error);
+             
+            res.send({code: 500, message: error});
         }
 
     }
