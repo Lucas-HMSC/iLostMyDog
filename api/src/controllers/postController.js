@@ -1,8 +1,9 @@
 const imageService = require('../services/imageService');
 const sql = require('../services/MySqlService');
 
-class postController{
-    async get(req,res,next) {
+class postController { 
+    
+    async get(req, res, next) {
         const id_usuario = req.user ? req.user.id : 1;
         const query = {
             sql: `
@@ -42,13 +43,10 @@ class postController{
         res.status(201).send(response);
     };
     
-    async post(req,res,next) {
+    async post(req, res, next) {
         const { nome_cao, area, cidade, id_status, data } = req.body;
 
-        //const upload = await imageService.upload(data[0]);
-        const upload = {payload:{
-            url: "../images/teste3.jpg"
-        }};
+        const upload = await imageService.upload(data[0]);
         const image_path = upload.payload["url"];
         const id_raca = await imageService.classify(image_path);
 
@@ -74,7 +72,7 @@ class postController{
         res.status(201).send({ id_post });
     };
 
-    async put(req,res,next) {
+    async put(req, res, next) {
         const { id_post, id_status } = req.body;
 
         const query = { 

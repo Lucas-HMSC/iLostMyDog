@@ -17,8 +17,8 @@ class MySqlService{
     async executeQuery(query) {
         try {
             const con = mysql.createConnection(config);
-            return new Promise((resolve,reject) => {
-                con.query(query.sql,(error,result,fields) => {
+            return new Promise((resolve, reject) => {
+                con.query(query.sql,(error, result, fields) => {
                     con.destroy();
                     if(error){
                         console.log(error);

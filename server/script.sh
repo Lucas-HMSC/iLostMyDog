@@ -1,7 +1,7 @@
 #!/bin/bash
-#Script para criação de arquivo com o id da raça identificada
+#Script para criação de arquivo TXT com o ID da raça identificada
 
-venv/Scripts/activate.bat
+source ./venv/bin/activate
 
 print_in_file() {
 	python3 classifier.py --image_path $1 > result.txt

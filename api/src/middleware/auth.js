@@ -4,16 +4,16 @@ const LocalStrategy = require('passport-local').Strategy;
 const sql = require('../services/MySqlService');
 
 let users = [{
-    id :1,
+    id : 1,
     username: 'adm',
-    email:'adm@adm.com',
-    password:'$2a$06$HT.EmXYUUhNo3UQMl9APmeC0SwoGsx7FtMoAWdzGicZJ4wR1J8alW'
+    email: 'adm@adm.com',
+    password: '$2a$06$HT.EmXYUUhNo3UQMl9APmeC0SwoGsx7FtMoAWdzGicZJ4wR1J8alW'
 }];
 
 
-module.exports = function(passport){
-    async function findUser(username){
-        const query = {sql:`SELECT * FROM USUARIOS`};
+module.exports = function(passport) {
+    async function findUser(username) {
+        const query = { sql: `SELECT * FROM USUARIOS` };
         const response = await sql.executeQuery(query);
         let users = {};
         response.forEach(row => {
@@ -32,8 +32,8 @@ module.exports = function(passport){
         return Object.keys(users).length == 0 ? null : users;
     }
 
-    async function findUserById(id){
-        const query = {sql:`SELECT * FROM USUARIOS`};
+    async function findUserById(id) {
+        const query = { sql: `SELECT * FROM USUARIOS` };
         const response = await sql.executeQuery(query);
         let users = {};
         response.forEach(row => {
@@ -51,18 +51,17 @@ module.exports = function(passport){
         return users;
     }
 
-
-    passport.serializeUser((user,done) => {
-        done(null,user.id);
+    passport.serializeUser((user, done) => {
+        done(null, user.id);
     });
 
-    passport.deserializeUser(async (id,done) => {
+    passport.deserializeUser(async (id, done) => {
         try {
             const user = await findUserById(id)
-            return done(null,user);
+            return done(null, user);
         } catch (error) {
             console.log(error);
-            return done(error,null);
+            return done(error, null);
         }
     });    
 
@@ -70,22 +69,21 @@ module.exports = function(passport){
         usernameField: 'username',
         passwordField: 'password'
     },
-    async (username,password,done) => {
+
+    async (username, password, done) => {
         try {
             const user = await findUser(username);
-            if(user == null || user.length == 0)
-                return done(null,false);
+            if(user === null || user.length === 0)
+                return done(null, false);
 
             // possivel validação via senha
-            const isValid = bcrypt.compareSync(password,user.password);
-            if(!isValid)
-                return done(null,false);
+            const isValid = bcrypt.compareSync(password, user.password);
+            if(!isValid) return done(null, false);
 
             return done(null,user);
         } catch (error) {
             console.log(error);
-            return done(error,false);
+            return done(error, false);
         }
     }));
-
 }
