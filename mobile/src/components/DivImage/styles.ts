@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { theme } from "../../styles/theme";
+import { Dimensions } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,5 +15,25 @@ export const styles = StyleSheet.create({
     width: 300,
     height: 200,
     borderRadius: 8,
+  },
+
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.9)',
+    position: 'relative',
+  },
+
+  modalImage: {
+    width: Dimensions.get('window').width - 50,
+    borderRadius: 8,
+  },
+
+  buttonBack: {
+    position: 'absolute',
+    top: 45,
+    right: 20,
+    zIndex: 100,
   },
 });
