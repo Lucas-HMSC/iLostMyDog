@@ -107,7 +107,9 @@ export function PublicationDogFound() {
     }, 1000);
   }
 
-  async function handleSelectImage() {
+
+
+  async function handleSelectGalery() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== 'granted') {
@@ -128,6 +130,42 @@ export function PublicationDogFound() {
     const { uri: image } = result;
 
     setImage(image);
+  }
+
+  async function handleSelectCamera() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Eita, precisamos de acesso à sua camera...');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri: image } = result;
+
+    setImage(image);
+  }
+
+  function handleSelectGaleryOrCamera() {
+    Alert.alert('Adicionar imagem', 'Deseja adicionar uma imagem da galeria ou abrir a camera?', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Galeria',
+        onPress: () => handleSelectGalery(),
+      },
+      { 
+        text: 'Camera', 
+        onPress: () => handleSelectCamera(),
+      },
+    ]);
   }
 
   if (pawLoading) {
@@ -161,7 +199,7 @@ export function PublicationDogFound() {
           <View>
             <InputImage 
               image={image}
-              handleSelectImage={handleSelectImage}
+              handleSelectImage={handleSelectGaleryOrCamera}
             />
           </View>
 

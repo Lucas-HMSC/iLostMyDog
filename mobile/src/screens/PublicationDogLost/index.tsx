@@ -89,7 +89,7 @@ export function PublicationDogLost() {
   }
 
   function handleSelectGaleryOrCamera() {
-    Alert.alert('Imagens', 'Deseja adicionar uma foto da galeria ou abrir a camera?', [
+    Alert.alert('Adicionar imagem', 'Deseja adicionar uma imagem da galeria ou abrir a camera?', [
       {
         text: 'Cancelar',
         style: 'cancel',

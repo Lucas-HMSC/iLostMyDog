@@ -66,4 +66,8 @@ export const styles = StyleSheet.create({
   fixMargin: {
     marginTop: 10,
   },
+
+  buttonContainer: {
+    marginTop: 20,
+  },
 });

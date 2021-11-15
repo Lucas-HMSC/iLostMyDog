@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, SafeAreaView, Text } from 'react-native';
+import { View, ScrollView, SafeAreaView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { DivImage } from '../../components/DivImage';
 import { Input } from '../../components/Input';
 
 import { styles } from './styles';
+import { Button } from '../../components/Button';
 
 export function PublicationView() {
   const [dogName, setDogName] = useState('Mike');
@@ -22,6 +23,23 @@ export function PublicationView() {
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handleClickDisable() {
+    Alert.alert('Desativar', 'Escolha uma das opções abaixo:', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Cachorro Encontrado',
+        onPress: () => console.log(''),
+      },
+      { 
+        text: 'Excluir Publicação', 
+        onPress: () => console.log(''),
+      },
+    ]);
   }
 
   return (
@@ -129,6 +147,14 @@ export function PublicationView() {
               value={email}
               onChangeText={(text) => setEmail(text)}
               disabled
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              title='DESATIVAR'
+              primary
+              onPress={() => handleClickDisable()}
             />
           </View>
         </View>
