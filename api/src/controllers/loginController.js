@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 class loginController {
     async cadastro(req, res) {
         try {
-            const { nome, telefone, email, area, cidade } = req.body;
-            const hashPassword = await bcrypt.hash(req.body.senha, 10);
+            const { nome, telefone, email, senha, area, cidade } = req.body;
+            const hashPassword = await bcrypt.hash(senha, 10);
             
             const query = {
                 sql: `INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, HASH, AREA, CIDADE) VALUES ('${nome}','${telefone}','${email}','${hashPassword}','${area}','${cidade}')`

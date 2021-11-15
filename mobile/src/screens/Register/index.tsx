@@ -45,6 +45,7 @@ export function Register() {
       nome: name,
       telefone: telephoneWithoutMask,
       email: email,
+      senha: password,
       area: `${latitude},${longitude}`,
       cidade: city
     };
@@ -52,22 +53,18 @@ export function Register() {
     setPawLoading(true);
     await api
       .post('/cadastro', newUser)
-      .then(() => {
-        Alert.alert(
-          'Sucesso!',
-          `Conta criada, ${name}!`,
-          [{
-            text: 'Certo 🐕!',
-            onPress: () => {
-              setDogLoading(true);
-
-              setTimeout(() => {
-                setDogLoading(false);
-                navigation.navigate('Welcome');
-              }, 1000);
-            }
-          }]
-        );
+      .then(({ data }) => {
+        if (data.code === 200) {
+          setPawLoading(false)
+          Alert.alert(
+            'Sucesso!',
+            `Conta criada, ${name}!`,
+            [{
+              text: 'Certo 🐕!',
+              onPress: () => navigation.navigate('Welcome')
+            }]
+          );
+        } else throw new Error;
       })
       .catch((e) => {
         console.log(e);
