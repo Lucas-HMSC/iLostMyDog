@@ -11,10 +11,40 @@ class loginController {
                 sql: `INSERT INTO USUARIOS (NOME, TELEFONE, EMAIL, HASH, AREA, CIDADE) VALUES ('${nome}','${telefone}','${email}','${hashPassword}','${area}','${cidade}')`
             };
             
+            const { insertId: id_usuario } = await sql.executeQuery(query);
+
+            res.status(201).send({id_usuario});
+        } catch (error) {
+            res.send({code: 500, message: error});
+        }
+    }
+
+    async getById(req, res) {
+        try {
+            const { id_usuario } = req.body;
+
+            const query = {
+                sql: `SELECT Id_Usuario, Nome, Telefone, Email, Area, Cidade FROM USUARIOS WHERE ID_USUARIO = ${id_usuario}`
+            };
             const response = await sql.executeQuery(query);
 
-            res.send({code: 200, message: 'Cadastro realizado com sucesso.'});
-        } catch (error) {
+            res.status(200).send({ response });
+        } catch(error) {
+            res.send({code: 500, message: error});
+        }
+    }
+
+    async getByEmail(req, res) {
+        try {
+            const { email } = req.body;
+
+            const query = {
+                sql: `SELECT Id_Usuario, Nome, Telefone, Email, Area, Cidade FROM USUARIOS WHERE EMAIL = '${email}'`
+            };
+            const response = await sql.executeQuery(query);
+
+            res.status(200).send({ response });
+        } catch(error) {
             res.send({code: 500, message: error});
         }
     }

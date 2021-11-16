@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { saveUserData } from '../../libs/storage';
 
 import { DogLoading } from '../../components/DogLoading';
 import { PawLoading } from '../../components/PawLoading';
@@ -53,8 +54,8 @@ export function Register() {
     setPawLoading(true);
     await api
       .post('/cadastro', newUser)
-      .then(({ data }) => {
-        if (data.code === 200) {
+      .then((response) => {
+        if (response.status === 201) {
           setPawLoading(false)
           Alert.alert(
             'Sucesso!',
@@ -64,6 +65,8 @@ export function Register() {
               onPress: () => navigation.navigate('Welcome')
             }]
           );
+
+          handleSaveUserData(response.data.id_usuario);
         } else throw new Error;
       })
       .catch((e) => {
@@ -77,6 +80,13 @@ export function Register() {
         );
       })
       .finally(() => setPawLoading(false))
+  }
+
+  async function handleSaveUserData(id_usuario: Number) {
+    const { data } = await api.post('/usuario', { id_usuario });
+    const userData = data.response;
+    
+    saveUserData(userData);
   }
 
   async function handleAutoFill() {
@@ -128,8 +138,6 @@ export function Register() {
         latitude,
         longitude,
       });
-
-      // console.log(address);
 
       setLatitude(String(latitude));
       setLongitude(String(longitude));

@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
+import { returnUserData } from '../../libs/storage';
 
 import { DogLoading } from '../../components/DogLoading';
 import { InputImage } from '../../components/InputImage';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
+import { api } from '../../services/api';
+
 import { styles } from './styles';
 
 export function PublicationDogLost() {
+  const [userId, setUserId] = useState(0);
   const [dogName, setDogName] = useState('');
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -36,14 +40,25 @@ export function PublicationDogLost() {
     navigation.goBack();
   }
 
-  function handlePublicationView() {
-    // setLoading(true);
+  async function handleCreatePublication() {
+    setLoading(true);
 
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   navigation.navigate('PublicationView');
-    // }, 1000);
-    console.log(image);
+    const data = new FormData();
+    data.append('nome_cao', dogName);
+    data.append('id_status', '1');
+    data.append('user_id', userId > 0 ? `${userId}` : '1');
+
+    image.forEach((image) => {
+      data.append('images', {
+        name: `image_${dogName}.jpg`,
+        type: 'image/jpg',
+        uri: image
+      } as any)
+    });
+
+    const response = await api.post('/add', data);
+
+    setLoading(false);
   }
 
   async function handleSelectGalery() {
@@ -66,7 +81,7 @@ export function PublicationDogLost() {
 
     const { uri: image } = result;
 
-    setImage(image);
+    setImage([image]);
   }
 
   async function handleSelectCamera() {
@@ -85,7 +100,7 @@ export function PublicationDogLost() {
 
     const { uri: image } = result;
 
-    setImage(image);
+    setImage([image]);
   }
 
   function handleSelectGaleryOrCamera() {
@@ -103,6 +118,20 @@ export function PublicationDogLost() {
         onPress: () => handleSelectCamera(),
       },
     ]);
+  }
+
+  useEffect(() => {
+    handleLoadUserData()
+  }, []);
+
+  async function handleLoadUserData() {
+    const data = await returnUserData();
+    
+    if (data) {
+      setEmail(data[0].Email);
+      setTelephone(data[0].Telefone);
+      setUserId(data[0].Id_Usuario);
+    }
   }
 
   if (loading) {
@@ -159,7 +188,7 @@ export function PublicationDogLost() {
           <View style={styles.button}>
             <Button
               title='Publicar'
-              onPress={handlePublicationView}
+              onPress={handleCreatePublication}
               primary
             />
           </View>

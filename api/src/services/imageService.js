@@ -1,9 +1,5 @@
 require('dotenv').config({path: __dirname +"/./../.env"});
-const sql = require('../services/MySqlService');
-const classifier = require('../../../server/script');
-const { exec } = require('child_process')
-const multer = require('multer');
-const parser = multer({dest: 'public/uploads'})
+const classifier = require('../../../server/script.js');
 
 class imageService{
 
@@ -15,8 +11,8 @@ class imageService{
         }
     }
 
-    async upload(data) {
-        parser.single('images')(req, res, err => {
+    async upload(image) {
+        parser.single('images')((req, res, err) => {
             if(err) res.status(500).json({ error: 1, payload: err });
             
             const image = {};
@@ -25,9 +21,9 @@ class imageService{
             image.url = `/uploads/${image.id}`;
 
             res.status(200).json({ 
-                error:0, 
-                payload: {id: image.id, url: image.url
-            }})
+                error: 0, 
+                payload: { id: image.id, url: image.url }
+            })
         })
     }
 } 

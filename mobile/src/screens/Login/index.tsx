@@ -3,10 +3,13 @@ import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import { saveUserData } from '../../libs/storage';
 
 import { DogLoading } from '../../components/DogLoading';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+
+import { api } from '../../services/api';
 
 import { styles } from './styles';
 
@@ -21,19 +24,28 @@ export function Login() {
     navigation.goBack();
   }
 
-  function handleLogin() {
-    console.log('Email: ', email);
-    console.log('Senha: ', password);
-
+  async function handleLogin() {
     setLoading(true);
+    const response = await api.post('./login', { 
+      username: email,
+      password: password
+    });
 
-    setTimeout(() => {
+    if (response.status === 200) {
       setLoading(false);
-      navigation.navigate('LoginFailed');
-      setTimeout(() => {
-        navigation.navigate('Home');
-      }, 1000)
-    }, 1000);
+      await handleSaveUserData(email);
+      navigation.navigate('Welcome');
+      return;
+    } 
+    
+    navigation.navigate('Home');
+  }
+
+  async function handleSaveUserData(email: string) {
+    const { data } = await api.post('/usuario/email', { email });
+    const userData = data.response;
+    
+    saveUserData(userData);
   }
 
   if (loading) {

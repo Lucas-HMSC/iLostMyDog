@@ -1,11 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { AllPublicationsView } from '../screens/AllPublicationsView';
 import { PublicationDogFound } from '../screens/PublicationDogFound';
+import { OthersPublications } from '../screens/OthersPublications';
 import { PublicationDogLost } from '../screens/PublicationDogLost';
 import { PublicationSelect } from '../screens/PublicationSelect';
 import { PublicationsView } from '../screens/PublicationsView';
 import { PublicationView } from '../screens/PublicationView';
+import { MyPublications } from '../screens/MyPublications';
 import { LoginSuccess } from '../screens/LoginSuccess';
 import { LoginFailed } from '../screens/LoginFailed';
 import { Register } from '../screens/Register';
@@ -92,6 +95,21 @@ export function StackRoutes() {
       <Screen 
         name='Account'
         component={Account}
+      />
+
+      <Screen 
+        name='AllPublicationsView'
+        component={AllPublicationsView}
+      />
+
+      <Screen 
+        name='MyPublications'
+        component={MyPublications}
+      />
+
+      <Screen 
+        name='OthersPublications'
+        component={OthersPublications}
       />
     </Navigator>
   );

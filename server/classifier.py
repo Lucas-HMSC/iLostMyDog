@@ -5,14 +5,14 @@ tf.compat.v1.disable_v2_behavior()
 
 # Varíaveis Globais
 tf.compat.v1.flags.DEFINE_string("image_path", "./images/image1.jpg", "Image to be classified")
-label_path = './labels.txt'
-model_path = './model.pb'
+label_path = '/home/lucas/Documentos/GitHub/iLostMyDog/server/labels.txt'
+model_path = '/home/lucas/Documentos/GitHub/iLostMyDog/server/model.pb'
 
 FLAGS = tf.compat.v1.flags.FLAGS
 FLAGS(sys.argv)
 
 image = tf.compat.v1.gfile.FastGFile(FLAGS.image_path, 'rb').read()
-labels = [line.rstrip() for line in tf.compat.v1.gfile.GFile("labels.txt")]
+labels = [line.rstrip() for line in tf.compat.v1.gfile.GFile("/home/lucas/Documentos/GitHub/iLostMyDog/server/labels.txt")]
 
 
 with tf.compat.v1.gfile.FastGFile(model_path, 'rb') as f:

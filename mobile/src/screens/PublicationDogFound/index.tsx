@@ -5,6 +5,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { returnUserData } from '../../libs/storage';
 
 import { PawLoading } from '../../components/PawLoading';
 import { DogLoading } from '../../components/DogLoading';
@@ -12,15 +13,19 @@ import { InputImage } from '../../components/InputImage';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
+import { api } from '../../services/api';
+
 import { styles } from './styles';
 
 export function PublicationDogFound() {
+  const [userId, setUserId] = useState(0);
   const [telephone, setTelephone] = useState('');
   const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
   const [email, setEmail] = useState('');
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string[]>([]);
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [city, setCity] = useState('');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
   const [pawLoading, setPawLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,16 +76,24 @@ export function PublicationDogFound() {
     }
 
     setPawLoading(true);
+
     const { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.High
     });
 
     if (coords) {
       const { latitude, longitude } = coords;
+      
+      const address = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
 
       setLatitude(String(latitude));
       setLongitude(String(longitude));
+      setCity(address[0].subregion || '');
     }
+
     setPawLoading(false);
   }
 
@@ -97,17 +110,6 @@ export function PublicationDogFound() {
   function handleGoBack() {
     navigation.goBack();
   }
-
-  function handlePublicationView() {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      navigation.navigate('PublicationView');
-    }, 1000);
-  }
-
-
 
   async function handleSelectGalery() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -129,7 +131,7 @@ export function PublicationDogFound() {
 
     const { uri: image } = result;
 
-    setImage(image);
+    setImage([image]);
   }
 
   async function handleSelectCamera() {
@@ -148,7 +150,7 @@ export function PublicationDogFound() {
 
     const { uri: image } = result;
 
-    setImage(image);
+    setImage([image]);
   }
 
   function handleSelectGaleryOrCamera() {
@@ -166,6 +168,46 @@ export function PublicationDogFound() {
         onPress: () => handleSelectCamera(),
       },
     ]);
+  }
+
+  async function handleCreatePublication() {
+    setLoading(true);
+
+    const data = new FormData();
+    data.append('nome_cao', '');
+    data.append('area', `${latitude},${longitude}`);
+    data.append('cidade', city);
+    data.append('id_status', '2');
+    data.append('user_id', userId > 0 ? `${userId}` : '1');
+
+    image.forEach((image) => {
+      data.append('images', {
+        name: `image_sem-nome.jpg`,
+        type: 'image/jpg',
+        uri: image
+      } as any)
+    });
+    
+    const response = await api.post('/add', data);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    handleLoadUserData()
+  }, []);
+
+  async function handleLoadUserData() {
+    const data = await returnUserData();
+    
+    if (data) {
+      setEmail(data[0].Email);
+      setTelephone(data[0].Telefone);
+      setLatitude((data[0].Area).split(',')[0]);
+      setLongitude((data[0].Area).split(',')[1]);
+      setCity(data[0].Cidade);
+      setUserId(data[0].Id_Usuario);
+    }
   }
 
   if (pawLoading) {
@@ -242,7 +284,7 @@ export function PublicationDogFound() {
           <View style={styles.button}>
             <Button
               title='Publicar'
-              onPress={handlePublicationView}
+              onPress={handleCreatePublication}
               primary
             />
           </View>

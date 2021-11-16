@@ -2,12 +2,12 @@ const { exec } = require('child_process')
 const path = require("path")
 const fs = require("fs")
 
-const image_path = '../images/teste3.jpg'
+// const image_path = '../images/teste3.jpg'
 let breed_id = 0
 
 async function classifier(image_path) {
   try {
-    exec(`./script.sh ${path.resolve(image_path)}`, (error) => {
+    exec(`${path.resolve('..', './server', './script.sh')} ${path.resolve('..', './server', './uploads', image_path)}`, (error) => {
       if (error) {
         console.log(`Error: ${error.message}`)
         return 
@@ -16,15 +16,16 @@ async function classifier(image_path) {
   } catch (error) {
     console.log(error);
   } finally {
-    breed_id = getBreedId()
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    await delay(4000)
+    breed_id = getBreedId();
     return breed_id;
   }
-
 }
 
 const getBreedId = () => {  
   try {
-    return Number(fs.readFileSync('./result.txt', 'utf8')[0]);
+    return Number(fs.readFileSync('./result.txt', 'utf8')[0]) || 0;
   } catch (error) {
     console.log(error);
     return error;

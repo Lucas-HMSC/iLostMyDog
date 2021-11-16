@@ -17,7 +17,7 @@ module.exports = function(passport) {
         const response = await sql.executeQuery(query);
         let users = {};
         response.forEach(row => {
-            if(username === row.NOME){
+            if(username === row.EMAIL){
                 users = {
                     id: row.ID_USUARIO,
                     nome: row.NOME,

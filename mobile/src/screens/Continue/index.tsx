@@ -20,11 +20,8 @@ export function Continue() {
 
   function handleGoForward() {
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      navigation.navigate('Welcome');
-    }, 1000);
+    navigation.navigate('Welcome');
+    setLoading(false);
   }
 
   if (loading) {

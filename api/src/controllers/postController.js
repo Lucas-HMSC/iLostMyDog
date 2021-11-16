@@ -2,12 +2,10 @@ const imageService = require('../services/imageService');
 const sql = require('../services/MySqlService');
 
 class postController { 
-    
-    async get(req, res, next) {
-        const id_usuario = req.user ? req.user.id : 1;
+    async getAllPost(req, res, next) {
         const query = {
             sql: `
-            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.SITUACAO FROM POSTAGENS P
+            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
             INNER JOIN CAES C
             ON P.ID_CAO = C.ID_CAO
             INNER JOIN RACAS R
@@ -16,18 +14,42 @@ class postController {
             ON P.ID_USUARIO = U.ID_USUARIO
             INNER JOIN STATUS S
             ON P.ID_STATUS = S.ID_STATUS
+            INNER JOIN IMAGENS I
+            ON I.ID_POST = P.ID_POST
+            WHERE P.ID_STATUS <> 4  
+        `};
+        const response = await sql.executeQuery(query);
+        res.status(201).send(response);
+    };
+
+    async getPostByUser(req, res, next) {
+        const {id_usuario} = req.body;
+        const query = {
+            sql: `
+            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
+            INNER JOIN CAES C
+            ON P.ID_CAO = C.ID_CAO
+            INNER JOIN RACAS R
+            ON C.ID_RACA = R.ID_RACA
+            INNER JOIN USUARIOS U
+            ON P.ID_USUARIO = U.ID_USUARIO
+            INNER JOIN STATUS S
+            ON P.ID_STATUS = S.ID_STATUS
+            INNER JOIN IMAGENS I
+            ON I.ID_POST = P.ID_POST
             WHERE P.ID_USUARIO = ${id_usuario}
+            AND P.ID_STATUS <> 4
         `};
         const response = await sql.executeQuery(query);
         res.status(201).send(response);
     };
 
     async getPostById(req, res) {
-        const { id_post } = req.body;
+        const { id: id_post } = req.params;
 
         const query = {
             sql: `
-            SELECT C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.SITUACAO FROM POSTAGENS P
+            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
             INNER JOIN CAES C
             ON P.ID_CAO = C.ID_CAO
             INNER JOIN RACAS R
@@ -36,7 +58,57 @@ class postController {
             ON P.ID_USUARIO = U.ID_USUARIO
             INNER JOIN STATUS S
             ON P.ID_STATUS = S.ID_STATUS
+            INNER JOIN IMAGENS I
+            ON I.ID_POST = P.ID_POST
             WHERE P.ID_POST = ${id_post}
+            AND P.ID_STATUS <> 4
+        `};
+
+        const response = await sql.executeQuery(query);
+        res.status(201).send(response);
+    };
+
+    async getPostByBreed(req, res) {
+        const { raca: id_raca, usuario: id_usuario} = req.params;
+
+        const query = {
+            sql: `
+            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
+            INNER JOIN CAES C
+            ON P.ID_CAO = C.ID_CAO
+            INNER JOIN RACAS R
+            ON C.ID_RACA = R.ID_RACA
+            INNER JOIN USUARIOS U
+            ON P.ID_USUARIO = U.ID_USUARIO
+            INNER JOIN STATUS S
+            ON P.ID_STATUS = S.ID_STATUS
+            INNER JOIN IMAGENS I
+            ON I.ID_POST = P.ID_POST
+            WHERE R.ID_RACA = ${id_raca}
+            AND P.ID_STATUS = 2
+            AND P.ID_USUARIO <> ${id_usuario}
+        `};
+
+        const response = await sql.executeQuery(query);
+        res.status(201).send(response);
+    };
+
+    async getBreedByPost(req, res) {
+        const { id } = req.params;
+
+        const query = {
+            sql: `
+            SELECT R.ID_RACA, R.RACA FROM POSTAGENS P
+            INNER JOIN CAES C
+            ON P.ID_CAO = C.ID_CAO
+            INNER JOIN RACAS R
+            ON C.ID_RACA = R.ID_RACA
+            INNER JOIN USUARIOS U
+            ON P.ID_USUARIO = U.ID_USUARIO
+            INNER JOIN STATUS S
+            ON P.ID_STATUS = S.ID_STATUS
+            WHERE P.ID_STATUS = 1
+            AND P.ID_USUARIO = ${id};
         `};
 
         const response = await sql.executeQuery(query);
@@ -44,32 +116,40 @@ class postController {
     };
     
     async post(req, res, next) {
-        const { nome_cao, area, cidade, id_status, data } = req.body;
+        try {
+            const { nome_cao, area, cidade, id_status, user_id } = req.body;
 
-        const upload = await imageService.upload(data[0]);
-        const image_path = upload.payload["url"];
-        const id_raca = await imageService.classify(image_path);
+            const requestImages = req.files;
 
-        const id_usuario = req.user ? req.user.id : 1;
-        
-        let query = { 
-            sql: `INSERT INTO CAES(NOME, ID_RACA) VALUES ('${nome_cao}', ${id_raca})` 
-        };
-        const { insertId: id_cao } = await sql.executeQuery(query);
+            const image = requestImages.map(image => {
+                return { path: image.filename }
+            });
 
-        query = {
-            sql: `
-            INSERT INTO POSTAGENS(AREA, CIDADE, DATA, ID_CAO, ID_USUARIO, ID_STATUS) 
-            VALUES ('${area}', '${cidade}', NOW(), ${id_cao}, ${id_usuario}, ${id_status})
-        `};
-        const { insertId: id_post } = await sql.executeQuery(query);
+            const id_raca = await imageService.classify(image[0].path);
 
-        query = {
-            sql: `INSERT INTO IMAGENS(PATH, ID_POST) VALUES ('${image_path}', ${id_post})`
-        };
-        await sql.executeQuery(query);
+            const id_usuario = user_id;
+            
+            let query = { 
+                sql: `INSERT INTO CAES(NOME, ID_RACA) VALUES ('${nome_cao}', ${id_raca})` 
+            };
+            const { insertId: id_cao } = await sql.executeQuery(query);
 
-        res.status(201).send({ id_post });
+            query = {
+                sql: `
+                INSERT INTO POSTAGENS(AREA, CIDADE, DATA, ID_CAO, ID_USUARIO, ID_STATUS) 
+                VALUES ('${area}', '${cidade}', NOW(), ${id_cao}, ${id_usuario}, ${id_status})
+            `};
+            const { insertId: id_post } = await sql.executeQuery(query);
+
+            query = {
+                sql: `INSERT INTO IMAGENS(PATH, ID_POST) VALUES ('${image[0].path}', ${id_post})`
+            };
+            await sql.executeQuery(query);
+  
+            res.status(201).send({ id_post });
+        } catch(error) {
+            res.send({error});
+        }
     };
 
     async put(req, res, next) {

@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { styles } from './styles';
 
 type Props = {
-  image: string;
+  image: string[];
   handleSelectImage: (pointerInside: boolean) => void;
 }
 
@@ -18,10 +18,10 @@ export function InputImage({ image, handleSelectImage }: Props) {
     >
       <View style={styles.container}>
         {
-          image !== '' ?
+          image[0] ?
             <Image 
               style={styles.image}
-              source={{ uri: image }}
+              source={{ uri: image[0] }}
               resizeMode='cover'
             /> : 
             <Feather

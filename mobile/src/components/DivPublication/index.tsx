@@ -4,7 +4,7 @@ import { View, Image, Text, ImageSourcePropType, Pressable, PressableAndroidRipp
 import { styles } from './styles';
 
 type Props = {
-  image: ImageSourcePropType;
+  image: string;
   onPress: () => void;
   dogNameOrBreed: string;
   lost?: boolean;
@@ -28,7 +28,7 @@ export function DivPublication({
         onPress={onPress}
       >
         <Image
-          source={image}
+          source={{ uri: `http://192.168.0.6:7999/uploads/${image}` }}
           style={styles.image}
           resizeMode='cover'
         />

@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const loginController = require('./controllers/loginController');
 const app = express();
+const path = require('path');
 require('./middleware/auth')(passport);
 
 //Rotas
@@ -21,6 +22,8 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/uploads', express.static(path.resolve(__dirname, '..', '..', './server', 'uploads')));
 
 //Init do app
 app.use('/', routes);

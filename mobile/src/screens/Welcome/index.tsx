@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import { returnUserData } from '../../libs/storage';
 
 import { ButtonCard } from '../../components/ButtonCard';
 import { Button } from '../../components/Button';
@@ -10,6 +11,8 @@ import { Button } from '../../components/Button';
 import { styles } from './styles';
 
 export function Welcome() {
+  const [username, setUsername] = useState('');
+
   const navigation = useNavigation();
 
   function handleMenuAccount() {
@@ -24,8 +27,32 @@ export function Welcome() {
     navigation.navigate('PublicationsView');
   }
 
+  function handleAllPublicationsView() {
+    navigation.navigate('AllPublicationsView');
+  }
+
+  function handleMyPublications() {
+    navigation.navigate('MyPublications');
+  }
+
+  function handleOthersPublications() {
+    navigation.navigate('OthersPublications');
+  }
+
   function handleFAQ() {
     navigation.navigate('FAQ');
+  }
+
+  useEffect(() => {
+    handleLoadUserData()
+  }, []);
+
+  async function handleLoadUserData() {
+    const data = await returnUserData();
+    
+    if (data) setUsername((data[0].Nome).split(' ')[0]);
+    
+    // console.log(data[0].Nome);
   }
 
   return (
@@ -34,7 +61,9 @@ export function Welcome() {
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>
-              Bem-vindo!
+              {
+                username ? `Bem vindo, ${username}!` : 'Bem-vindo!'
+              }
             </Text>
             <BorderlessButton
               style={styles.buttonAccount}
@@ -57,17 +86,17 @@ export function Welcome() {
             <ButtonCard
               title='Minhas Publicações'
               arrColor={1}
-              onPress={handlePublicationsView}
+              onPress={handleMyPublications}
             />
             <ButtonCard
               title='Outras Publicações'
               arrColor={2}
-              onPress={handlePublicationsView}
+              onPress={handleOthersPublications}
             />
             <ButtonCard
               title='Todas as Publicações'
               arrColor={2}
-              onPress={handlePublicationsView}
+              onPress={handleAllPublicationsView}
             />
           </View>
 
