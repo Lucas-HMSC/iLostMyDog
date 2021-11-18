@@ -17,7 +17,7 @@ async function classifier(image_path) {
     console.log(error);
   } finally {
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-    await delay(4000)
+    await delay(4500)
     breed_id = getBreedId();
     return breed_id;
   }

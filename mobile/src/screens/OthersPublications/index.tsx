@@ -56,7 +56,7 @@ export function OthersPublications() {
   }
 
   function handlePublicationView(id: number) {
-    navigation.navigate('PublicationView');
+    navigation.navigate('PublicationView', {  id });
   }
 
   async function handleLoadUserData() {

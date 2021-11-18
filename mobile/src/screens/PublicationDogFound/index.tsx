@@ -20,7 +20,7 @@ import { styles } from './styles';
 export function PublicationDogFound() {
   const [userId, setUserId] = useState(0);
   const [telephone, setTelephone] = useState('');
-  const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
+  const [telephoneWithoutMask, setTelephoneWithoutMask] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState<string[]>([]);
   const [latitude, setLatitude] = useState('');
@@ -100,7 +100,7 @@ export function PublicationDogFound() {
   function maskTelephone(text: string) {
     setTelephone(text.replace(/\D/g, ''));
     if (text.length === 11) {
-      setTelephoneWithoutMask(Number(text));
+      setTelephoneWithoutMask(text);
       setTelephone(text.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/g, '($1) $2 $3-$4'));
     } else if (text.length > 11) {
       setTelephone(text.slice(0, 16));
@@ -170,6 +170,10 @@ export function PublicationDogFound() {
     ]);
   }
 
+  function handlePublicationView(id: number) {
+    navigation.navigate('PublicationView', {  id });
+  }
+
   async function handleCreatePublication() {
     setLoading(true);
 
@@ -177,6 +181,8 @@ export function PublicationDogFound() {
     data.append('nome_cao', '');
     data.append('area', `${latitude},${longitude}`);
     data.append('cidade', city);
+    data.append('email', email);
+    data.append('telefone', telephoneWithoutMask);
     data.append('id_status', '2');
     data.append('user_id', userId > 0 ? `${userId}` : '1');
 
@@ -189,6 +195,9 @@ export function PublicationDogFound() {
     });
     
     const response = await api.post('/add', data);
+    if (response.status === 201) {
+      handlePublicationView(Number(response.data.id_post))
+    }
 
     setLoading(false);
   }
@@ -202,7 +211,7 @@ export function PublicationDogFound() {
     
     if (data) {
       setEmail(data[0].Email);
-      setTelephone(data[0].Telefone);
+      setTelephoneWithoutMask(data[0].Telefone);
       setLatitude((data[0].Area).split(',')[0]);
       setLongitude((data[0].Area).split(',')[1]);
       setCity(data[0].Cidade);
@@ -271,7 +280,7 @@ export function PublicationDogFound() {
             <Input
               title='Telefone para contato'
               placeholder='(12) 9 9999-9999'
-              value={telephone}
+              value={telephone || telephoneWithoutMask}
               onChangeText={(text) => maskTelephone(text)}
             />
             <Input

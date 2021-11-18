@@ -45,7 +45,7 @@ export function AllPublicationsView() {
   }
 
   function handlePublicationView(id: number) {
-    navigation.navigate('PublicationView');
+    navigation.navigate('PublicationView', {  id });
   }
 
   if (loading) {

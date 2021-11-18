@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
+import { DogLoading } from '../../components/DogLoading';
 import { DivImage } from '../../components/DivImage';
+import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
+import { api } from '../../services/api';
+
 import { styles } from './styles';
-import { Button } from '../../components/Button';
+
+interface RouteProps {
+  id: number;
+}
 
 export function PublicationView() {
-  const [dogName, setDogName] = useState('Mike');
-  const [dogBreed, setDogBreed] = useState('Pastor Alemão');
-  const [city, setCity] = useState('São José dos Campos');
-  const [lat, setLat] = useState('-23.2166612');
-  const [long, setLong] = useState('-45.8943798');
-  const [telephone, setTelephone] = useState('(12) 9 9999-9999');
-  const [email, setEmail] = useState('email@email.com');
+  const [postId, setPostId] = useState(0);
+  const [dogName, setDogName] = useState('');
+  const [dogBreed, setDogBreed] = useState('');
+  const [city, setCity] = useState('');
+  const [lat, setLat] = useState('');
+  const [long, setLong] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [email, setEmail] = useState('');
+  const [imageURL, setImageURL] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+  const route = useRoute();
 
   function handleGoBack() {
     navigation.goBack();
@@ -40,6 +51,39 @@ export function PublicationView() {
         onPress: () => console.log(''),
       },
     ]);
+  }
+
+  async function fetchPublication() {
+    setLoading(true);
+    const { id } = route.params as RouteProps;
+    if (id > 0) {
+      try {
+        setPostId(id);
+        const { data } = await api.get(`/listar/${postId}`);
+        if (data) {
+          setDogName(data[0].NOME ? data[0].NOME : '');
+          setDogBreed(data[0].RACA);
+          setCity(data[0].CIDADE !== 'undefined' ? data[0].CIDADE : '');
+          setLat(data[0].AREA !== 'undefined' ? data[0].AREA.split(',')[0] : '');
+          setLong(data[0].AREA !== 'undefined' ? data[0].AREA.split(',')[1] : '');
+          setTelephone(data[0].TELEFONE ? data[0].TELEFONE : '');
+          setEmail(data[0].EMAIL ? data[0].EMAIL : '');
+          setImageURL(data[0].PATH ? data[0].PATH : '');
+        }
+      } catch(e) {
+        console.log(e);
+      } 
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchPublication();
+  }, [postId])
+
+  if (loading) {
+    return <DogLoading />
   }
 
   return (
@@ -65,25 +109,33 @@ export function PublicationView() {
           <View style={styles.divisor} />
 
           <View>
-            <DivImage/>
+            <DivImage image={ imageURL }/>
           </View>
 
           <View style={styles.inputGroup}>
-            <Input
-              title='Nome'
-              placeholder=''
-              value={dogName}
-              onChangeText={(text) => setDogName(text)}
-              disabled
-            />
+            {
+              dogName !== '' &&
+              (<Input
+                title='Nome'
+                placeholder=''
+                value={dogName}
+                onChangeText={(text) => setDogName(text)}
+                disabled
+              />)
+            }
 
-            <Input
-              title='Raça'
-              placeholder=''
-              value={dogBreed}
-              onChangeText={(text) => setDogBreed(text)}
-              disabled
-            />
+            { 
+              dogBreed !== '' && 
+              (
+                <Input
+                title='Raça'
+                placeholder=''
+                value={dogBreed}
+                onChangeText={(text) => setDogBreed(text)}
+                disabled
+              />
+              )
+            }
           </View>
 
           <Text style={styles.title}>
@@ -91,7 +143,9 @@ export function PublicationView() {
           </Text>
           <View style={styles.divisor} />
 
-          <View 
+          {
+            city !== '' &&
+          (<View 
             style={[
               styles.inputGroup,
               styles.fixMargin
@@ -120,7 +174,24 @@ export function PublicationView() {
               onChangeText={(text) => setLong(text)}
               disabled
             />
-          </View>
+          </View>)}
+
+          {
+            city === '' &&
+          (<View 
+            style={[
+              styles.inputGroup,
+              styles.fixMargin
+            ]}
+          >
+            <Input
+              title='Dados'
+              placeholder=''
+              value={'Não informado.'}
+              onChangeText={() => {}}
+              disabled
+            />
+          </View>)}
 
           <Text style={styles.title}>
             Contato
@@ -133,29 +204,33 @@ export function PublicationView() {
               styles.fixMargin
             ]}
           >
-            <Input
+            {
+              telephone !== '' &&
+            (<Input
               title='Telefone'
               placeholder=''
               value={telephone}
               onChangeText={(text) => setTelephone(text)}
               disabled
-            />
+            />)}
 
-            <Input
+            {
+              email !== '' &&
+            (<Input
               title='Email'
               placeholder=''
               value={email}
               onChangeText={(text) => setEmail(text)}
               disabled
-            />
+            />)}
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button
+            {/* <Button
               title='DESATIVAR'
               primary
               onPress={() => handleClickDisable()}
-            />
+            /> */}
           </View>
         </View>
       </ScrollView>

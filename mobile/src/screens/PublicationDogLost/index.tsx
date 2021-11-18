@@ -19,7 +19,7 @@ export function PublicationDogLost() {
   const [userId, setUserId] = useState(0);
   const [dogName, setDogName] = useState('');
   const [telephone, setTelephone] = useState('');
-  const [telephoneWithoutMask, setTelephoneWithoutMask] = useState(0);
+  const [telephoneWithoutMask, setTelephoneWithoutMask] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export function PublicationDogLost() {
   function maskTelephone(text: string) {
     setTelephone(text.replace(/\D/g, ''));
     if (text.length === 11) {
-      setTelephoneWithoutMask(Number(text));
+      setTelephoneWithoutMask(text);
       setTelephone(text.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/g, '($1) $2 $3-$4'));
     } else if (text.length > 11) {
       setTelephone(text.slice(0, 16));
@@ -40,11 +40,17 @@ export function PublicationDogLost() {
     navigation.goBack();
   }
 
+  function handlePublicationView(id: number) {
+    navigation.navigate('PublicationView', {  id });
+  }
+
   async function handleCreatePublication() {
     setLoading(true);
 
     const data = new FormData();
     data.append('nome_cao', dogName);
+    data.append('email', email);
+    data.append('telefone', telephoneWithoutMask);
     data.append('id_status', '1');
     data.append('user_id', userId > 0 ? `${userId}` : '1');
 
@@ -57,6 +63,9 @@ export function PublicationDogLost() {
     });
 
     const response = await api.post('/add', data);
+    if (response.status === 201) {
+      handlePublicationView(Number(response.data.id_post))
+    }
 
     setLoading(false);
   }
@@ -129,7 +138,7 @@ export function PublicationDogLost() {
     
     if (data) {
       setEmail(data[0].Email);
-      setTelephone(data[0].Telefone);
+      setTelephoneWithoutMask(data[0].Telefone);
       setUserId(data[0].Id_Usuario);
     }
   }
@@ -175,7 +184,7 @@ export function PublicationDogLost() {
             <Input
               title='Telefone para contato'
               placeholder='(12) 9 9999-9999'
-              value={telephone}
+              value={telephone || telephoneWithoutMask}
               onChangeText={(text) => maskTelephone(text)}
             />
             <Input

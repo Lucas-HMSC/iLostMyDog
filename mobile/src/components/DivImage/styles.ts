@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
 
   modalImage: {
     width: Dimensions.get('window').width - 50,
+    height: 400,
     borderRadius: 8,
   },
 

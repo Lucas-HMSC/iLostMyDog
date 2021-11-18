@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Image, Modal, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-import ImageExample from '../../assets/teste4.jpg';
-
 import { styles } from './styles';
 
-export function DivImage() {
+type Props = {
+  image: string;
+}
+
+export function DivImage({ image }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -31,9 +33,9 @@ export function DivImage() {
           </Pressable>
           
           <Image 
-            source={ImageExample}
+            source={{ uri: `http://192.168.0.6:7999/uploads/${image}` }}
             style={styles.modalImage}
-            resizeMode='center'
+            resizeMode='contain'
           />
         </View>
       </Modal>
@@ -43,7 +45,7 @@ export function DivImage() {
         onPress={() => setModalVisible(true)}
       >
         <Image
-          source={ImageExample}
+          source={{ uri: `http://192.168.0.6:7999/uploads/${image}` }}
           style={styles.image}
           resizeMode='cover'
         />

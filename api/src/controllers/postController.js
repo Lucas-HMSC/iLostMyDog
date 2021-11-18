@@ -16,7 +16,8 @@ class postController {
             ON P.ID_STATUS = S.ID_STATUS
             INNER JOIN IMAGENS I
             ON I.ID_POST = P.ID_POST
-            WHERE P.ID_STATUS <> 4  
+            WHERE P.ID_STATUS <> 4
+            ORDER BY P.ID_POST DESC  
         `};
         const response = await sql.executeQuery(query);
         res.status(201).send(response);
@@ -39,6 +40,7 @@ class postController {
             ON I.ID_POST = P.ID_POST
             WHERE P.ID_USUARIO = ${id_usuario}
             AND P.ID_STATUS <> 4
+            ORDER BY P.ID_POST DESC
         `};
         const response = await sql.executeQuery(query);
         res.status(201).send(response);
@@ -49,7 +51,7 @@ class postController {
 
         const query = {
             sql: `
-            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, U.TELEFONE, U.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
+            SELECT P.ID_POST, C.NOME, R.RACA, P.CIDADE, P.AREA, P.TELEFONE, P.EMAIL, S.ID_STATUS, I.PATH FROM POSTAGENS P
             INNER JOIN CAES C
             ON P.ID_CAO = C.ID_CAO
             INNER JOIN RACAS R
@@ -87,6 +89,7 @@ class postController {
             WHERE R.ID_RACA = ${id_raca}
             AND P.ID_STATUS = 2
             AND P.ID_USUARIO <> ${id_usuario}
+            ORDER BY P.ID_POST DESC
         `};
 
         const response = await sql.executeQuery(query);
@@ -117,7 +120,7 @@ class postController {
     
     async post(req, res, next) {
         try {
-            const { nome_cao, area, cidade, id_status, user_id } = req.body;
+            const { nome_cao, area, cidade, email, telefone, id_status, user_id } = req.body;
 
             const requestImages = req.files;
 
@@ -136,8 +139,8 @@ class postController {
 
             query = {
                 sql: `
-                INSERT INTO POSTAGENS(AREA, CIDADE, DATA, ID_CAO, ID_USUARIO, ID_STATUS) 
-                VALUES ('${area}', '${cidade}', NOW(), ${id_cao}, ${id_usuario}, ${id_status})
+                INSERT INTO POSTAGENS(AREA, CIDADE, DATA, TELEFONE, EMAIL, ID_CAO, ID_USUARIO, ID_STATUS) 
+                VALUES ('${area}', '${cidade}', NOW(), '${telefone}', '${email}', ${id_cao}, ${id_usuario}, ${id_status})
             `};
             const { insertId: id_post } = await sql.executeQuery(query);
 
