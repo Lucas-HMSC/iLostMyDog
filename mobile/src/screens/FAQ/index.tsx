@@ -31,7 +31,7 @@ const QA = [
   },
   {
     question: 'Quais raças posso publicar?',
-    answer: 'Atualmente nosso algoritmo permite que imagens das seguintes raças sejam identificadas com alto índice de acerto: Rottweiler, Bulldog, Pug, Pastor Alemão e Labrador.',
+    answer: 'Atualmente nosso sistema permite que imagens das seguintes raças sejam identificadas com alto índice de acerto: Rottweiler, Bulldog, Pug, Pastor Alemão e Labrador.',
     hasIcon: false,
   },
   {
